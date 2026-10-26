@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/login')
+    ->withoutMiddleware('web')
+    ->name('home');
+
+Route::view('/login', 'auth.login')
+    ->withoutMiddleware('web')
+    ->name('login');
