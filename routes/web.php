@@ -9,3 +9,6 @@ Route::redirect('/', '/login')
 Route::view('/login', 'auth.login')
     ->withoutMiddleware('web')
     ->name('login');
+
+Route::view('/dashboard', 'dashboards.main-dashboard')
+    ->name('dashboard');
