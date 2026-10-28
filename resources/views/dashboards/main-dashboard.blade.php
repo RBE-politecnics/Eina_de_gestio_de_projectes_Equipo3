@@ -59,7 +59,7 @@
                 <div class="row g-4 mt-5">
                     @foreach ($projects as $project)
                         <div class="col-12 col-md-6 col-xl-4">
-                            <div class="card bg-secondary text-white rounded-4 p-4 h-100 border-{{ $project['color'] }}">
+                            <div class="card dashboard-card bg-secondary text-white rounded-4 p-4 h-100 border-{{ $project['color'] }}">
                                 <h5>{{ $project['name'] }}</h5>
                                 <p class="text-secondary">{{ $project['description'] }}</p>
 

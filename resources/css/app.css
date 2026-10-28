@@ -1,5 +1,6 @@
 @import './bootstrap-custom.css';
 @import './pages/login.css';
+@import './pages/dashboard.css';
 
 :root {
     --bs-body-font-family: 'Manrope', sans-serif;
