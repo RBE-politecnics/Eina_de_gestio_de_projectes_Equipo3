@@ -10,6 +10,42 @@
                 <h1 class="text-white">Tauler</h1>
                 <p class="text-white">Benvingut a KANTUM</p>
 
+                @php
+                    $summaryProgress = 75;
+                    $summaryCompletedTasks = 18;
+                    $summaryTotalTasks = 24;
+                @endphp
+
+                <div class="card dashboard-card dashboard-summary-card bg-secondary text-white rounded-4 p-4">
+                    <div class="row flex-grow-1 align-items-center g-4 px-4">
+                        <div class="col-12 col-md-5">
+                            <h3>Resumen</h3>
+                            <p class="text-secondary fs-5 mb-0">Estadísticas generales de todos los proyectos</p>
+                        </div>
+
+                        <div class="col-12 col-md-7 d-flex align-items-center justify-content-md-end gap-4">
+                            <div class="dashboard-progress-circle" role="progressbar"
+                                aria-label="Progreso general del proyecto"
+                                aria-valuenow="{{ $summaryProgress }}" aria-valuemin="0" aria-valuemax="100">
+
+                                <svg viewBox="0 0 42 42" aria-hidden="true">
+                                    <circle class="dashboard-progress-circle-track" cx="21" cy="21" r="15.9155"></circle>
+                                    <circle class="dashboard-progress-circle-value" cx="21" cy="21" r="15.9155"
+                                        stroke-dasharray="{{ $summaryProgress }} {{ 100 - $summaryProgress }}"></circle>
+                                </svg>
+                                <span>{{ $summaryProgress }}%</span>
+                            </div>
+
+                            <div>
+                                <h3 class="text-white mb-1">Tareas totales</h3>
+                                <p class="text-secondary fs-5 mb-0">
+                                    {{ $summaryCompletedTasks }} de {{ $summaryTotalTasks }} tareas
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Cartas de proyectos -->
                 @php
                     $projects = [
