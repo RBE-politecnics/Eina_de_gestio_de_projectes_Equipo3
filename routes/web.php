@@ -10,5 +10,8 @@ Route::view('/login', 'auth.login')
     ->withoutMiddleware('web')
     ->name('login');
 
-Route::view('/dashboard', 'dashboards.main-dashboard')
+Route::view('/dashboard', 'pages.main-dashboard')
     ->name('dashboard');
+
+Route::view('/roles', 'pages.roles')
+->name('roles');

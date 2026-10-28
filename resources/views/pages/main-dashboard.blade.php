@@ -46,6 +46,8 @@
                     </div>
                 </div>
 
+                <hr class="dashboard-section-divider my-4">
+
                 <!-- Cartas de proyectos -->
                 @php
                     $projects = [
