@@ -2,6 +2,7 @@
 @import './pages/login.css';
 
 :root {
+    --bs-body-font-family: 'Manrope', sans-serif;
     --kantum-background: #111827;
     --kantum-panel: #1f2937;
     --kantum-panel-light: #293241;
@@ -12,6 +13,7 @@
 }
 
 body {
+    font-family: 'Manrope', sans-serif;
     min-height: 100vh;
     background-color: var(--kantum-background);
     color: #f3f4f6;
