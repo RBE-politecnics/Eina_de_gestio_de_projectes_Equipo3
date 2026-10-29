@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// VALIDO
+
 return new class extends Migration
 {
     /**
@@ -13,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('projecte__usuaris', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('projecte_id');
+            $table->foreignId('users_id');
+            $table->foreignId('rols_id');
         });
     }
 
