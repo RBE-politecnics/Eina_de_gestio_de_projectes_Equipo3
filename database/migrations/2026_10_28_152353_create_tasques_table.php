@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tasques', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            #ihate fokinniggers niggers niggers
         });
     }
 
