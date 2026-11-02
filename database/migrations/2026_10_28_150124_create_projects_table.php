@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('nom');
             $table->timestamps();
+            $table->string('Color')->default('#FFFFFF')->nullable();
+
         });
     }
 

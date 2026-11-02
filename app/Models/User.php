@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['nom'])]
+#[Fillable(['email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     protected $fillable = [
-        'nom',
+        'email',
+        'password',
     ];
 
     protected $table = 'Users';
