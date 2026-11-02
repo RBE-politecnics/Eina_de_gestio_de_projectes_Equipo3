@@ -1,0 +1,59 @@
+.bg-dark {
+    --bs-dark-rgb: 17, 24, 39;
+    background-color: rgb(var(--bs-dark-rgb)) !important;
+}
+
+.bg-secondary {
+    --bs-secondary-rgb: 31, 41, 55;
+    background-color: rgb(var(--bs-secondary-rgb)) !important;
+}
+
+.text-secondary {
+    --bs-secondary-rgb: 156, 163, 175;
+}
+
+.form-control {
+    border-color: var(--kantum-border);
+    background-color: var(--kantum-panel);
+    color: #f3f4f6;
+}
+
+.form-control::placeholder {
+    color: #6b7280;
+}
+
+.form-control:focus {
+    border-color: #3b82f6;
+    background-color: var(--kantum-panel);
+    color: #f3f4f6;
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.2);
+}
+
+.form-check-input {
+    border-color: #4b5563;
+    background-color: var(--kantum-panel);
+}
+
+.form-check-input:checked {
+    border-color: var(--kantum-primary);
+    background-color: var(--kantum-primary);
+}
+
+.btn-primary {
+    background-color: var(--kantum-primary);
+    border-color: var(--kantum-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: #e5e7eb;
+    --bs-btn-border-color: var(--kantum-border);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--kantum-panel-light);
+    --bs-btn-hover-border-color: #4b5563;
+}
