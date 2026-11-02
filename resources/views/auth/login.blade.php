@@ -52,10 +52,15 @@
                     <p class="small text-secondary mb-0">Introdueix les teves dades per continuar.</p>
                 </div>
 
-                <form class="d-grid gap-3">
+                <form method="POST" action="{{ route('login.store') }}" class="d-grid gap-3">
+                    @csrf
+
                     <div>
                         <label for="email" class="form-label small text-uppercase text-secondary fw-semibold">Correu electrònic</label>
-                        <input id="email" type="email" autocomplete="email" placeholder="arnau@kantum.cat" class="form-control form-control-lg">
+                        <input id="email" name="email" type="email" autocomplete="email" placeholder="arnau@kantum.cat" class="form-control form-control-lg" value="{{ old('email') }}" required>
+                        @error('email')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div>
@@ -63,15 +68,15 @@
                             <label for="password" class="form-label small text-uppercase text-secondary fw-semibold mb-2">Contrasenya</label>
                             <a href="#" class="forgot-link small mb-2">Has oblidat la contrasenya?</a>
                         </div>
-                        <input id="password" type="password" autocomplete="current-password" placeholder="••••••••••••" class="form-control form-control-lg">
+                        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••••••" class="form-control form-control-lg" required>
                     </div>
 
                     <div class="form-check">
-                        <input id="remember" type="checkbox" class="form-check-input">
+                        <input id="remember" name="remember" type="checkbox" class="form-check-input" @checked(old('remember'))>
                         <label for="remember" class="form-check-label small text-secondary">Recorda'm</label>
                     </div>
 
-                    <button type="button" class="btn btn-primary btn-lg w-100 fw-semibold text-white">
+                    <button type="submit" class="btn btn-primary btn-lg w-100 fw-semibold text-white">
                         Entrar a Kantum <span aria-hidden="true">→</span>
                     </button>
                 </form>

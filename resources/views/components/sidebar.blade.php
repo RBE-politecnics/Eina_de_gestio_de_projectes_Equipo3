@@ -8,8 +8,11 @@
         <a href="{{ route('dashboard') }}" class="nav-link active">
             Proyecto
         </a>
-        <a href="{{ route('roles') }}" class="nav-link text-white">
+        <a href="{{ route('projects.index') }}" class="nav-link text-white">
             Projectes
+        </a>
+        <a href="{{ route('roles') }}" class="nav-link text-white">
+            Rols
         </a>
         <a href="#" class="nav-link text-white">
             Tasques
