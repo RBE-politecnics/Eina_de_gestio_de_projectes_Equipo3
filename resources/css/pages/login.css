@@ -1,0 +1,70 @@
+.login-page {
+    min-height: 100vh;
+    font-family: 'Manrope', sans-serif;
+}
+
+.login-card {
+    max-width: 1024px;
+    overflow: hidden;
+    background-color: var(--kantum-background);
+    border: 0;
+}
+
+.login-form-panel {
+    background-color: var(--kantum-form-panel);
+}
+
+.brand-mark span {
+    display: block;
+    width: 24px;
+    height: 6px;
+    margin-bottom: 4px;
+    border-radius: 999px;
+}
+
+.brand-mark span:last-child {
+    margin-bottom: 0;
+}
+
+.eyebrow {
+    color: #93c5fd;
+}
+
+.feature-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.feature-check {
+    width: 20px;
+    height: 20px;
+    background: rgba(41, 50, 65, 0.8);
+    color: #93c5fd;
+    font-size: 0.75rem;
+}
+
+.forgot-link {
+    color: #93c5fd;
+    text-decoration: none;
+}
+
+.forgot-link:hover {
+    color: #bfdbfe;
+}
+
+.google-mark {
+    color: #60a5fa;
+    font-weight: 700;
+}
+
+.microsoft-mark {
+    display: grid;
+    width: 12px;
+    height: 12px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+}
+
+.microsoft-mark span {
+    background: #60a5fa;
+}

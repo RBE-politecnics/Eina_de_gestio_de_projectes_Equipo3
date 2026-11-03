@@ -4,12 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
-<<<<<<< Updated upstream
-Route::get('/', function () {
-    return view('welcome');
-=======
 Route::redirect('/', '/login')
-    ->withoutMiddleware('web')
     ->name('home');
 
 Route::view('/login', 'auth.login')
@@ -25,5 +20,4 @@ Route::middleware('auth')->group(function (): void {
     Route::view('/roles', 'pages.roles')->name('roles');
 
     Route::resource('projects', ProjectController::class);
->>>>>>> Stashed changes
 });

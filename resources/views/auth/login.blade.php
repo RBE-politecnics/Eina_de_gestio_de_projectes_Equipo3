@@ -53,7 +53,7 @@
                 </div>
 
                 <form method="POST" action="{{ route('login.store') }}" class="d-grid gap-3">
-                @csrf
+                    @csrf
 
                     <div>
                         <label for="email" class="form-label small text-uppercase text-secondary fw-semibold">Correu electrònic</label>
@@ -68,7 +68,12 @@
                             <label for="password" class="form-label small text-uppercase text-secondary fw-semibold mb-2">Contrasenya</label>
                             <a href="#" class="forgot-link small mb-2">Has oblidat la contrasenya?</a>
                         </div>
-                        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••••••" class="form-control form-control-lg">
+                        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••••••" class="form-control form-control-lg" required>
+                    </div>
+
+                    <div class="form-check">
+                        <input id="remember" name="remember" type="checkbox" class="form-check-input" @checked(old('remember'))>
+                        <label for="remember" class="form-check-label small text-secondary">Recorda'm</label>
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-lg w-100 fw-semibold text-white">
