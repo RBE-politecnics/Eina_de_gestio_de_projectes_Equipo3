@@ -11,13 +11,13 @@ class ProjectSeeder extends Seeder
     {
         DB::table('projects')->insert([
             [
-                'nom' => 'Rediseño web',
+                'nom' => 'melapela',
                 'Color' => '#198754',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nom' => 'App móvil',
+                'nom' => 'nomelapela',
                 'Color' => '#0d6efd',
                 'created_at' => now(),
                 'updated_at' => now(),
