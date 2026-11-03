@@ -8,12 +8,16 @@
 
             <main class="col-12 col-md-9 col-lg-10 p-4">
                 <h1 class="text-white">Tauler</h1>
-                <p class="text-white">Benvingut a KANTUM</p>
+                <p class="text-white">Benvingut, a KANTUM {{ auth()->user()->email }}</p>
 
                 @php
-                    $summaryProgress = 75;
-                    $summaryCompletedTasks = 18;
-                    $summaryTotalTasks = 24;
+                    $projects = \App\Models\Projects::latest()->get();
+                    $tasks = \App\Models\Tasques::query()->get();
+                    $summaryTotalTasks = $tasks->count();
+                    $summaryCompletedTasks = $tasks->where('progres', 100)->count();
+                    $summaryProgress = $summaryTotalTasks > 0
+                        ? round($tasks->avg('progres'))
+                        : 0;
                 @endphp
 
                 <div class="card dashboard-card dashboard-summary-card bg-secondary text-white rounded-4 p-4">
@@ -48,67 +52,40 @@
 
                 <hr class="dashboard-section-divider my-4">
 
-                <!-- Cartas de proyectos -->
-                @php
-                    $projects = [
-                        [
-                            'name' => 'Rediseño web',
-                            'description' => 'Nueva interfaz para la plataforma.',
-                            'tasks' => '18 / 24',
-                            'date' => '12 nov. 2026',
-                            'progress' => 75,
-                            'color' => 'success',
-                        ],
-                        [
-                            'name' => 'App móvil',
-                            'description' => 'Aplicación móvil para equipos.',
-                            'tasks' => '9 / 20',
-                            'date' => '28 nov. 2026',
-                            'progress' => 45,
-                            'color' => 'primary',
-                        ],
-                        [
-                            'name' => 'Campaña marketing',
-                            'description' => 'Planificación de la campaña anual.',
-                            'tasks' => '6 / 15',
-                            'date' => '5 dic. 2026',
-                            'progress' => 40,
-                            'color' => 'warning',
-                        ],
-                        [
-                            'name' => 'Portal cliente',
-                            'description' => 'Espacio privado para clientes.',
-                            'tasks' => '14 / 18',
-                            'date' => '20 nov. 2026',
-                            'progress' => 78,
-                            'color' => 'info',
-                        ],
-                        [
-                            'name' => 'Automatización',
-                            'description' => 'Optimización de procesos internos.',
-                            'tasks' => '4 / 16',
-                            'date' => '15 dic. 2026',
-                            'progress' => 25,
-                            'color' => 'danger',
-                        ],
-                    ];
-                @endphp
-
                 <div class="row g-4 mt-5">
                     @foreach ($projects as $project)
+                        @php
+                            $projectTasks = $tasks->where('projecte_id', $project->id);
+                            $completedTasks = $projectTasks->where('progres', 100)->count();
+                            $projectProgress = $projectTasks->count() > 0
+                                ? round($projectTasks->avg('progres'))
+                                : 0;
+                            $latestTask = $projectTasks->sortByDesc('data_finalitzacio')->first();
+                        @endphp
+
                         <div class="col-12 col-md-6 col-xl-4">
-                            <div class="card dashboard-card bg-secondary text-white rounded-4 p-4 h-100 border-{{ $project['color'] }}">
-                                <h5>{{ $project['name'] }}</h5>
-                                <p class="text-secondary">{{ $project['description'] }}</p>
-
-                                <div class="d-flex justify-content-between">
-                                    <span class="text-secondary">Tareas: {{ $project['tasks'] }}</span>
-                                    <span class="text-secondary">{{ $project['date'] }}</span>
+                            <div class="card dashboard-card bg-secondary text-white rounded-4 p-4 h-100"
+                                style="border-color: {{ $project->color }};">
+                                <div class="d-flex align-items-center gap-2">
+                                    <h5 class="mb-0">{{ $project->nom }}</h5>
                                 </div>
-
-                                <p class="small text-secondary mb-1">PROGRÉS</p>
-                                <div class="progress" style="height: 7px;" role="progressbar" aria-label="Progreso de {{ $project['name'] }}" aria-valuenow="{{ $project['progress'] }}" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar bg-{{ $project['color'] }}" style="width: {{ $project['progress'] }}%;"></div>
+                                <p class="text-secondary mt-3 mb-2">
+                                    {{ $latestTask?->comentaris ?? 'Sense comentaris' }}
+                                </p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-secondary">
+                                        Tasques: {{ $completedTasks }} / {{ $projectTasks->count() }}
+                                    </span>
+                                    <span class="text-secondary">
+                                        {{ $latestTask?->data_finalitzacio ?? 'Sense data' }}
+                                    </span>
+                                </div>
+                                <p class="small text-secondary mb-1 mt-3">PROGRÉS</p>
+                                <div class="progress" role="progressbar"
+                                aria-label="Progreso de {{ $project->nom }}"
+                                    aria-valuenow="{{ $projectProgress }}" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar"
+                                        style="width: {{ $projectProgress }}%; background-color: {{ $project->color }};"></div>
                                 </div>
                             </div>
                         </div>

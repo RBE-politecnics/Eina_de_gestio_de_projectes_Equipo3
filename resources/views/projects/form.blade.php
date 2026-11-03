@@ -13,9 +13,9 @@
     </div>
 
     <div class="mb-3">
-        <label for="Color" class="form-label text-white">Color</label>
-        <input id="Color" name="Color" type="color" class="form-control form-control-color" value="{{ old('Color', $project->Color ?? '#FFFFFF') }}">
-        @error('Color')
+        <label for="color" class="form-label text-white">Color</label>
+        <input id="color" name="color" type="color" class="form-control form-control-color" value="{{ old('color', $project->color ?? '#FFFFFF') }}">
+        @error('color')
             <div class="text-danger small mt-1">{{ $message }}</div>
         @enderror
     </div>

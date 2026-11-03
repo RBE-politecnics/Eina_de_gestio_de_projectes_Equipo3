@@ -20,7 +20,6 @@
                         <div class="col-12 col-md-6 col-xl-4">
                             <div class="card bg-secondary text-white h-100 p-4">
                                 <div class="d-flex align-items-center gap-2 mb-3">
-                                    <span class="rounded-circle" style="width: 14px; height: 14px; background-color: {{ $project->Color }}"></span>
                                     <h2 class="h5 mb-0">{{ $project->nom }}</h2>
                                 </div>
                                 <div class="d-flex gap-2 mt-auto">
