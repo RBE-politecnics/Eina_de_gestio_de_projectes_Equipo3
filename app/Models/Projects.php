@@ -8,6 +8,6 @@ class Projects extends Model
 {
     protected $fillable = [
         'nom',
-        'Color',
+        'color',
     ];
 }

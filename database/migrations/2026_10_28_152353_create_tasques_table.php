@@ -21,9 +21,9 @@ return new class extends Migration
             $table->timestamps();
             $table->date('data_finalitzacio')->nullable();
             $table->foreignId('estats_id');
-            $table->text('Comentaris')->nullable();
-            $table->integer('Progres')->default(0);
-            $table->string('Color')->default('#FFFFFF')->nullable();
+            $table->text('comentaris')->nullable();
+            $table->integer('progres')->default(0);
+            $table->string('color')->default('#FFFFFF')->nullable();
         });
     }
 
