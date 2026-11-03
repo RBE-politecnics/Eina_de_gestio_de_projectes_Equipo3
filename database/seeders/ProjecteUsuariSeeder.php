@@ -9,14 +9,25 @@ class ProjecteUsuariSeeder extends Seeder
 {
     public function run(): void
     {
-        $projecteId = DB::table('projects')->orderBy('id')->value('id');
-        $usuariId = DB::table('Users')->orderBy('id')->value('id');
+        $projecteIds = DB::table('projects')
+            ->whereIn('nom', ['melapela', 'nomelapela'])
+            ->pluck('id', 'nom');
+        $usuariId = DB::table('Users')
+            ->where('email', 'superadmin@gmail.com')
+            ->value('id');
         $rolId = DB::table('rols')->where('nom', 'Administrador')->value('id');
 
         DB::table('projecte__usuaris')->insert([
-            'projecte_id' => $projecteId,
-            'users_id' => $usuariId,
-            'rols_id' => $rolId,
+            [
+                'projecte_id' => $projecteIds['melapela'],
+                'users_id' => $usuariId,
+                'rols_id' => $rolId,
+            ],
+            [
+                'projecte_id' => $projecteIds['nomelapela'],
+                'users_id' => $usuariId,
+                'rols_id' => $rolId,
+            ],
         ]);
     }
 }
