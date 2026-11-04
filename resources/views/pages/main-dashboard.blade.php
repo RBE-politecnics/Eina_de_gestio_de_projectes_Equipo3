@@ -90,6 +90,13 @@
                             </div>
                         </div>
                     @endforeach
+                        <button type="button" class=" col-xl-4 border-0 bg-transparent onclick="window.location.href='{{ route('projects.create') }}'>
+                            <div class="card dashboard-card bg-secondary text-white rounded-4 h-100 d-flex justify-content-center">
+                                    <h5 style="font-size: 70px;">+</h5>
+                            </div>
+                        </button>
+
+
 
                 </div>
             </main>
