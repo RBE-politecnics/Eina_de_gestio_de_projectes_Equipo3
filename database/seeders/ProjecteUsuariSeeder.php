@@ -12,7 +12,7 @@ class ProjecteUsuariSeeder extends Seeder
         $projecteIds = DB::table('projects')
             ->whereIn('nom', ['melapela', 'nomelapela'])
             ->pluck('id', 'nom');
-        $usuariId = DB::table('Users')
+        $usuariId = DB::table('users')
             ->where('email', 'superadmin@gmail.com')
             ->value('id');
         $rolId = DB::table('rols')->where('nom', 'Administrador')->value('id');

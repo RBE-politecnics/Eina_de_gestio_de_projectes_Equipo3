@@ -12,8 +12,8 @@ class Tasques extends Model
         'nom',
         'data_finalitzacio',
         'estats_id',
-        'Comentaris',
-        'Progres',
-        'Color',
+        'comentaris',
+        'progres',
+        'color',
     ];
 }

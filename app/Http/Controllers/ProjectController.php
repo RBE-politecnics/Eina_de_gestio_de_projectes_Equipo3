@@ -25,7 +25,7 @@ class ProjectController
     {
         $project = $request->validate([
             'nom' => ['required', 'string', 'max:255'],
-            'Color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
         ]);
 
         Projects::create($project);
@@ -47,7 +47,7 @@ class ProjectController
     {
         $projectData = $request->validate([
             'nom' => ['required', 'string', 'max:255'],
-            'Color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
         ]);
 
         $project->update($projectData);
