@@ -25,10 +25,14 @@ class ProjectController
     {
         $project = $request->validate([
             'nom' => ['required', 'string', 'max:255'],
-            'color' => ['nullable', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'descripcion' => ['nullable', 'string', 'max:5000'],
         ]);
 
         Projects::create($project);
+
+        if ($request->input('source') === 'dashboard') {
+            return redirect()->route('dashboard')->with('status', 'Proyecto creado correctamente.');
+        }
 
         return redirect()->route('projects.index')->with('status', 'Proyecto creado correctamente.');
     }

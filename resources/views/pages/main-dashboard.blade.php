@@ -70,7 +70,7 @@
                                     <h5 class="mb-0">{{ $project->nom }}</h5>
                                 </div>
                                 <p class="text-secondary mt-3 mb-2">
-                                    {{ $latestTask?->comentaris ?? 'Sense comentaris' }}
+                                    {{ $project->descripcion }}
                                 </p>
                                 <div class="d-flex justify-content-between">
                                     <span class="text-secondary">
@@ -90,17 +90,58 @@
                             </div>
                         </div>
                     @endforeach
-                        <button type="button" class=" col-xl-4 border-0 bg-transparent onclick="window.location.href='{{ route('projects.create') }}'>
+                        <button type="button"
+                                class="col-xl-4 border-0 bg-transparent"
+                                data-bs-toggle="modal"
+                                data-bs-target="#crearModal">
+
                             <div class="card dashboard-card bg-secondary text-white rounded-4 h-100 d-flex justify-content-center">
-                                    <h5 style="font-size: 70px;">+</h5>
+                                <h5 style="font-size: 70px;">+</h5>
                             </div>
+
                         </button>
-
-
-
                 </div>
             </main>
 
         </div>
     </div>
+
+    <div class="modal" id="crearModal" tabindex="-1" aria-labelledby="crearModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content bg-secondary text-white">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="crearModalLabel">Crear proyecto</h5>
+                    <button type="button" class="btn-close btn-close-white"
+                            data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <form method="POST" action="{{ route('projects.store') }}">
+                    @csrf
+
+                    <div class="modal-body">
+                        <div>
+                            <label for="project-name" class="form-label">Nombre</label>
+                            <input type="text" id="project-name" name="nom"
+                                class="form-control" placeholder="Nombre del proyecto" required>
+                        </div>
+
+                        <div class="mt-3">
+                            <label for="project-description" class="form-label">Descripción</label>
+                            <textarea id="project-description" name="descripcion"
+                                class="form-control" rows="3"
+                                placeholder="Describe brevemente el proyecto"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-light"
+                                data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar proyecto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
