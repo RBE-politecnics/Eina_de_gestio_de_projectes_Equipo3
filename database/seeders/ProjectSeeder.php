@@ -15,12 +15,14 @@ class ProjectSeeder extends Seeder
                 'color' => '#198754',
                 'created_at' => now(),
                 'updated_at' => now(),
+                'descripcion' => 'Descripción del proyecto melapela',
             ],
             [
                 'nom' => 'nomelapela',
                 'color' => '#0d6efd',
                 'created_at' => now(),
                 'updated_at' => now(),
+                'descripcion' => 'Descripción del proyecto nomelapela',
             ],
         ]);
     }

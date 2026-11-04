@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nom');
             $table->timestamps();
             $table->string('color')->default('#FFFFFF')->nullable();
-
+            $table->text('descripcion')->nullable();
         });
     }
 
