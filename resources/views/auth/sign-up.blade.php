@@ -12,36 +12,35 @@
             <h2 class="fw-bold mb-5">KANTUM</h2>
 
             <h1 class="fw-bold mb-4">
-                Organitza les idees.<br>
-                Avança en equip.
+                Organitza les idees<br>
+                Avança en equip
             </h1>
 
             <p class="text-secondary">
                 Un espai clar i compartit perquè el teu equip se centri en allò que realment importa.
             </p>
             
-            <h4 class="fw-bold mt-auto">¿No tienes cuenta?</h4>
+            <h4 class="fw-bold mt-auto">¿Ya tienes cuenta?</h4>
 
-            <button type="submit" class="btn btn-secondary btn-lg w-100 fw-semibold text-white mt-auto">
-                Crear cuenta →
-            </button>
+            <a href="{{ route('login') }}"
+            class="btn btn-secondary btn-lg w-100 fw-semibold text-white mt-auto">
+                Iniciar sesión
+            </a>
         </div>
 
         <!-- Login -->
-        <div class="col-lg-6 text-white p-5"
+        <div class="col-lg-6 text-white p-5 d-flex flex-column justify-content-center"
              style="background: var(--kantum-form-panel);">
 
-            <p class="mb-3" style="color: #93c5fd;">Benvingut de nou</p>
-
-            <h2 class="fw-bold mb-3">Torna al teu espai</h2>
-            <p class="text-secondary mb-4">Introdueix les teves dades per continuar.</p>
+            <h2 class="fw-bold mb-3">Crear cuenta</h2>
+            <p class="text-secondary mb-4">Introduce tus datos para continuar</p>
 
             <form method="POST" action="{{ route('login.store') }}">
                 @csrf
 
                 <div class="mb-3">
                     <label for="email" class="form-label text-secondary">
-                        Correu electrònic
+                        Correo electrónico
                     </label>
                     <input type="email" id="email" name="email"
                            class="form-control form-control-lg"
@@ -55,7 +54,7 @@
 
                 <div class="mb-3">
                     <label for="password" class="form-label text-secondary">
-                        Contrasenya
+                        Contraseña
                     </label>
 
                     <div class="input-group">
@@ -75,12 +74,12 @@
                     <input type="checkbox" id="remember" name="remember"
                            class="form-check-input" @checked(old('remember'))>
                     <label for="remember" class="form-check-label text-secondary">
-                        Recorda'm
+                        Recordar
                     </label>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-lg w-100 fw-semibold text-white">
-                    Iniciar sesión →
+                    Crear cuenta
                 </button>
             </form>
 
