@@ -1,0 +1,279 @@
+/* Estils de les vistes Tauler, Calendari i Analítiques */
+
+:root {
+    --kantum-coral: #FF6B6B;
+    --color-disseny: #a855f7;
+    --color-frontend: #3b82f6;
+    --color-backend: #22c55e;
+    --color-bd: #f59e0b;
+    --color-qa: #FF6B6B;
+}
+
+/* Pestanyes del projecte */
+
+.menu-projecte .nav-link {
+    color: var(--kantum-muted);
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+}
+
+.menu-projecte .nav-link:hover {
+    color: #fff;
+}
+
+.menu-projecte .nav-link.active {
+    color: #fff;
+    border-bottom-color: var(--kantum-primary);
+}
+
+/* Tauler Kanban */
+
+.tauler {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.columna {
+    background-color: var(--kantum-panel);
+    border: 1px solid var(--kantum-border);
+    border-radius: 1rem;
+    padding: 1rem;
+    min-height: 60vh;
+}
+
+.columna.sobre {
+    border-color: var(--kantum-primary);
+    background-color: var(--kantum-panel-light);
+}
+
+.columna-tasques {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 50vh;
+}
+
+.comptador {
+    background-color: var(--kantum-background);
+    color: var(--kantum-muted);
+    border-radius: 1rem;
+    padding: 0 0.6rem;
+    font-size: 0.85rem;
+}
+
+.tasca {
+    background-color: var(--kantum-background);
+    border: 1px solid var(--kantum-border);
+    border-left: 4px solid var(--kantum-border);
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    cursor: grab;
+}
+
+.tasca:hover {
+    border-color: #4b5563;
+}
+
+.tasca.arrossegant {
+    opacity: 0.5;
+}
+
+.tasca.bloquejada {
+    cursor: pointer;
+    opacity: 0.75;
+}
+
+.tasca.bloquejada .tasca-titol {
+    text-decoration: line-through;
+}
+
+.tasca-titol {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background-color: var(--kantum-primary);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Colors dels tipus de tasca */
+
+.tipus {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    border-radius: 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #111827;
+}
+
+.tipus-disseny { background-color: var(--color-disseny); }
+.tipus-frontend { background-color: var(--color-frontend); }
+.tipus-backend { background-color: var(--color-backend); }
+.tipus-bd { background-color: var(--color-bd); }
+.tipus-qa { background-color: var(--color-qa); }
+
+.tasca.tipus-disseny { border-left-color: var(--color-disseny); background-color: var(--kantum-background); }
+.tasca.tipus-frontend { border-left-color: var(--color-frontend); background-color: var(--kantum-background); }
+.tasca.tipus-backend { border-left-color: var(--color-backend); background-color: var(--kantum-background); }
+.tasca.tipus-bd { border-left-color: var(--color-bd); background-color: var(--kantum-background); }
+.tasca.tipus-qa { border-left-color: var(--color-qa); background-color: var(--kantum-background); }
+/* El fons es repeteix perquè .tipus-* també pinta el fons de les etiquetes */
+
+.missatge-bloqueig {
+    color: var(--kantum-coral);
+}
+
+/* Calendari */
+
+.calendari {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.dia-setmana {
+    color: var(--kantum-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.dia {
+    background-color: var(--kantum-panel);
+    border: 1px solid var(--kantum-border);
+    border-radius: 0.75rem;
+    min-height: 7rem;
+    padding: 0.5rem;
+}
+
+.dia.buit {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.dia.avui {
+    border-color: var(--kantum-primary);
+}
+
+.dia-numero {
+    color: var(--kantum-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.dia.avui .dia-numero {
+    color: #fff;
+}
+
+.esdeveniment {
+    display: block;
+    margin-top: 0.3rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    color: #111827;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Analítiques */
+
+.targeta-dada {
+    background-color: var(--kantum-panel);
+    border: 1px solid var(--kantum-border);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    height: 100%;
+}
+
+.targeta-dada .progress {
+    background-color: var(--kantum-border);
+}
+
+.targeta-dada .table {
+    --bs-table-bg: transparent;
+}
+
+.targeta-dada .valor {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.grafic-barres {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    height: 12rem;
+}
+
+.barra-dia {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.barra {
+    width: 100%;
+    max-width: 3rem;
+    background-color: var(--kantum-primary);
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.barra-dia small {
+    color: var(--kantum-muted);
+    margin-top: 0.4rem;
+}
+
+/* Mòbil */
+
+@media (max-width: 991px) {
+    .tauler {
+        grid-template-columns: 1fr;
+    }
+
+    .columna,
+    .columna-tasques {
+        min-height: auto;
+    }
+
+    .columna-tasques {
+        min-height: 4rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .calendari {
+        gap: 0.25rem;
+    }
+
+    .dia {
+        min-height: 4rem;
+        padding: 0.25rem;
+    }
+
+    .esdeveniment {
+        font-size: 0.6rem;
+        padding: 0.1rem 0.2rem;
+    }
+
+    .dia-setmana {
+        font-size: 0.65rem;
+    }
+}
