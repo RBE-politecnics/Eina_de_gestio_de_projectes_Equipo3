@@ -60,43 +60,58 @@
                             $projectProgress = $projectTasks->count() > 0
                                 ? round($projectTasks->avg('progres'))
                                 : 0;
-                            $latestTask = $projectTasks->sortByDesc('data_finalitzacio')->first();
                         @endphp
 
                         <div class="col-12 col-md-6 col-xl-4">
-                            <div class="card dashboard-card bg-secondary text-white rounded-4 p-4 h-100"
-                                style="border-color: {{ $project->color }};">
-                                <div class="d-flex align-items-center gap-2">
-                                    <h5 class="mb-0">{{ $project->nom }}</h5>
+                            <div class="card dashboard-project-card border-0 bg-secondary text-white rounded-4 overflow-hidden h-100"
+                                style="--project-color: {{ $project->color }};">
+                                <div class="dashboard-project-header p-4" style="background-color: {{ $project->color }};">
+                                    <h5 class="mb-1 fw-bold text-white">{{ $project->nom }}</h5>
+                                    <small class="fw-bold text-white">
+                                        Creado el {{ $project->created_at->format('d/m/Y') }}
+                                    </small>
                                 </div>
-                                <p class="text-secondary mt-3 mb-2">
-                                    {{ $project->descripcion }}
-                                </p>
-                                <div class="d-flex justify-content-between">
-                                    <span class="text-secondary">
-                                        Tasques: {{ $completedTasks }} / {{ $projectTasks->count() }}
-                                    </span>
-                                    <span class="text-secondary">
-                                        {{ $latestTask?->data_finalitzacio ?? 'Sense data' }}
-                                    </span>
-                                </div>
-                                <p class="small text-secondary mb-1 mt-3">PROGRÉS</p>
-                                <div class="progress" role="progressbar"
-                                aria-label="Progreso de {{ $project->nom }}"
-                                    aria-valuenow="{{ $projectProgress }}" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar"
-                                        style="width: {{ $projectProgress }}%; background-color: {{ $project->color }};"></div>
+
+                                <div class="p-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="small text-secondary">Progreso</span>
+                                        <span class="small text-secondary">{{ $projectProgress }}%</span>
+                                    </div>
+                                    <div class="progress mb-4" role="progressbar"
+                                        aria-label="Progreso de {{ $project->nom }}"
+                                        aria-valuenow="{{ $projectProgress }}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar"
+                                            style="width: {{ $projectProgress }}%; background-color: {{ $project->color }};"></div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="mb-0">Tareas</h6>
+                                        <span class="small text-secondary">
+                                            {{ $completedTasks }} / {{ $projectTasks->count() }}
+                                        </span>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        @forelse ($projectTasks as $task)
+                                            <li class="list-group-item bg-transparent text-white px-0">
+                                                {{ $task->nom }}
+                                            </li>
+                                        @empty
+                                            <li class="list-group-item bg-transparent text-secondary px-0">
+                                                No hay tareas
+                                            </li>
+                                        @endforelse
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     @endforeach
                         <button type="button"
-                                class="col-xl-4 border-0 bg-transparent"
+                                class="col-xl-4 border-0 bg-transparent dashboard-create-project"
                                 data-bs-toggle="modal"
                                 data-bs-target="#crearModal">
 
-                            <div class="card dashboard-card bg-secondary text-white rounded-4 h-100 d-flex justify-content-center">
-                                <h5 style="font-size: 70px;">+</h5>
+                            <div class="card dashboard-card dashboard-create-project-card bg-secondary text-white rounded-4 h-100">
+                                <span class="dashboard-create-project-plus">+</span>
                             </div>
 
                         </button>
