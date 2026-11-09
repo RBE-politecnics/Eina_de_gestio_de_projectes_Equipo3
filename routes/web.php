@@ -13,7 +13,7 @@ Route::view('/login', 'auth.login')
 Route::post('/login', [AuthController::class, 'login'])
     ->name('login.store');
 
-Route::view('/signup', 'auth.sign-up')
+Route::view('/sign-up', 'auth.sign-up')
     ->name('sign.up');
 
 Route::middleware('auth')->group(function (): void {
@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function (): void {
     Route::view('/dashboard', 'pages.main-dashboard')->name('dashboard');
     Route::view('/roles', 'pages.roles')->name('roles');
 
-    Route::resource('projects', ProjectController::class);
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 });
 
 // Vistes del projecte (Alex): tauler Kanban, calendari i analítiques

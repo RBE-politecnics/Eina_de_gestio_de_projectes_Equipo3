@@ -22,16 +22,17 @@
             
             <h4 class="fw-bold mt-auto">¿No tienes cuenta?</h4>
 
-            <button type="submit" class="btn btn-secondary btn-lg w-100 fw-semibold text-white mt-auto">
-            Crear cuenta
-            </button>
+            <a href="{{ route('sign.up') }}"
+            class="btn btn-secondary btn-lg w-100 fw-semibold text-white mt-auto">
+                Crear cuenta
+            </a>
         </div>
 
         <!-- Login -->
         <div class="col-lg-6 text-white p-5 d-flex flex-column justify-content-center"
              style="background: var(--kantum-form-panel);">
 
-            <h2 class="fw-bold mb-3">Volver a tu espacio</h2>
+            <h2 class="fw-bold mb-3">Iniciar sesión</h2>
             <p class="text-secondary mb-4">Introduce tus datos para continuar</p>
 
             <form method="POST" action="{{ route('login.store') }}">
