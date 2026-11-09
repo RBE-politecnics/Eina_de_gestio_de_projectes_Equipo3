@@ -5,25 +5,31 @@
     </div>
 
     <nav class="nav nav-pills flex-column gap-1">
-        <a href="{{ route('dashboard') }}" class="nav-link active">
+        <a href="{{ route('dashboard') }}"
+           @class(['nav-link', 'active' => request()->routeIs('dashboard'), 'text-white' => ! request()->routeIs('dashboard')])>
             Proyecto
         </a>
-        <a href="{{ route('projects.index') }}" class="nav-link text-white">
+        <a href="{{ route('projects.index') }}"
+           @class(['nav-link', 'active' => request()->routeIs('projects.*'), 'text-white' => ! request()->routeIs('projects.*')])>
             Projectes
         </a>
-        <a href="{{ route('roles') }}" class="nav-link text-white">
+        <a href="{{ route('roles') }}"
+           @class(['nav-link', 'active' => request()->routeIs('roles'), 'text-white' => ! request()->routeIs('roles')])>
             Rols
         </a>
         <a href="#" class="nav-link text-white">
             Tasques
         </a>
-        <a href="{{ route('tauler') }}" class="nav-link text-white">
+        <a href="{{ route('tauler') }}"
+           @class(['nav-link', 'active' => request()->routeIs('tauler'), 'text-white' => ! request()->routeIs('tauler')])>
             Tauler
         </a>
-        <a href="{{ route('calendari') }}" class="nav-link text-white">
+        <a href="{{ route('calendari') }}"
+           @class(['nav-link', 'active' => request()->routeIs('calendari'), 'text-white' => ! request()->routeIs('calendari')])>
             Calendari
         </a>
-        <a href="{{ route('analitiques') }}" class="nav-link text-white">
+        <a href="{{ route('analitiques') }}"
+           @class(['nav-link', 'active' => request()->routeIs('analitiques'), 'text-white' => ! request()->routeIs('analitiques')])>
             Analítiques
         </a>
     </nav>
