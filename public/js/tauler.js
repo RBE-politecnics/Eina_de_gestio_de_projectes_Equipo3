@@ -3,6 +3,14 @@
 const columnes = document.querySelectorAll('.columna');
 let tascaArrossegada = null;
 
+const nomsTipus = {
+    disseny: 'Disseny',
+    frontend: 'Front-end',
+    backend: 'Back-end',
+    bd: 'Base de dades',
+    qa: 'QA'
+};
+
 function actualitzarComptadors() {
     columnes.forEach(function (columna) {
         columna.querySelector('.comptador').textContent = columna.querySelectorAll('.tasca').length;
@@ -16,8 +24,9 @@ function mostrarDetall(tasca) {
     document.querySelector('#detallResponsable').textContent = tasca.dataset.responsable;
     document.querySelector('#detallData').textContent = tasca.dataset.data;
 
-    // El nom de l'estat el té la columna on està la tasca
-    document.querySelector('#detallEstat').textContent = tasca.closest('.columna').dataset.nom;
+    // El nom de l'estat el té la columna amb el mateix data-estat que la tasca
+    const columna = document.querySelector('.columna[data-estat="' + tasca.dataset.estat + '"]');
+    document.querySelector('#detallEstat').textContent = columna.dataset.nom;
 
     const avis = document.querySelector('#detallBloqueig');
     if (tasca.dataset.estat == 'feta') {
@@ -37,7 +46,9 @@ function prepararTasca(tasca) {
     });
 }
 
-document.querySelectorAll('.tasca').forEach(prepararTasca);
+document.querySelectorAll('.tasca').forEach(function (tasca) {
+    prepararTasca(tasca);
+});
 
 columnes.forEach(function (columna) {
     // Sense preventDefault el navegador no deixa deixar anar res a sobre
@@ -72,9 +83,8 @@ const formulari = document.querySelector('#formNovaTasca');
 formulari.addEventListener('submit', function (event) {
     event.preventDefault();
 
-    const selectTipus = document.querySelector('#novaTipus');
-    const clauTipus = selectTipus.value;
-    const nomTipus = selectTipus.options[selectTipus.selectedIndex].text;
+    const clauTipus = document.querySelector('#novaTipus').value;
+    const nomTipus = nomsTipus[clauTipus];
     const titol = document.querySelector('#novaTitol').value;
     const responsable = document.querySelector('#novaResponsable').value;
 
@@ -83,7 +93,8 @@ formulari.addEventListener('submit', function (event) {
     const data = parts[2] + '/' + parts[1] + '/' + parts[0];
 
     const tasca = document.createElement('article');
-    tasca.className = 'tasca vora-' + clauTipus;
+    tasca.classList.add('tasca');
+    tasca.classList.add('vora-' + clauTipus);
     tasca.setAttribute('draggable', 'true');
     tasca.setAttribute('data-bs-toggle', 'modal');
     tasca.setAttribute('data-bs-target', '#modalTasca');
@@ -94,18 +105,30 @@ formulari.addEventListener('submit', function (event) {
     tasca.dataset.data = data;
     tasca.dataset.descripcio = document.querySelector('#novaDescripcio').value;
 
-    tasca.innerHTML = '<span class="tipus tipus-' + clauTipus + '"></span>'
-        + '<p class="tasca-titol"></p>'
-        + '<small class="text-secondary"></small>';
-    tasca.querySelector('.tipus').textContent = nomTipus;
-    tasca.querySelector('.tasca-titol').textContent = titol;
-    tasca.querySelector('small').textContent = data + ' · ' + responsable;
+    const etiqueta = document.createElement('span');
+    etiqueta.classList.add('tipus');
+    etiqueta.classList.add('tipus-' + clauTipus);
+    etiqueta.textContent = nomTipus;
+
+    const textTitol = document.createElement('p');
+    textTitol.classList.add('tasca-titol');
+    textTitol.textContent = titol;
+
+    const textPeu = document.createElement('small');
+    textPeu.classList.add('text-secondary');
+    textPeu.textContent = data + ' · ' + responsable;
+
+    tasca.appendChild(etiqueta);
+    tasca.appendChild(textTitol);
+    tasca.appendChild(textPeu);
 
     document.querySelector('.columna[data-estat="per-fer"] .columna-tasques').appendChild(tasca);
     prepararTasca(tasca);
     actualitzarComptadors();
 
-    formulari.reset();
+    document.querySelector('#novaTitol').value = '';
+    document.querySelector('#novaDescripcio').value = '';
+    document.querySelector('#novaData').value = '';
     document.querySelector('#modalNovaTasca .btn-close').click();
 });
 
