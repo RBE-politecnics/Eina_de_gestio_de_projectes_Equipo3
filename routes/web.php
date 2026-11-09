@@ -24,3 +24,10 @@ Route::middleware('auth')->group(function (): void {
 
     Route::resource('projects', ProjectController::class);
 });
+
+// Vistes del projecte (Alex): tauler Kanban, calendari i analítiques
+Route::middleware('auth')->group(function (): void {
+    Route::view('/tauler', 'projects.tauler')->name('tauler');
+    Route::view('/calendari', 'pages.calendari')->name('calendari');
+    Route::view('/analitiques', 'pages.analitiques')->name('analitiques');
+});
