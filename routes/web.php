@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function (): void {
     Route::view('/dashboard', 'pages.main-dashboard')->name('dashboard');
     Route::view('/roles', 'pages.roles')->name('roles');
 
-    Route::resource('projects', ProjectController::class);
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
 });
 
 // Vistes del projecte (Alex): tauler Kanban, calendari i analítiques

@@ -9,10 +9,6 @@
            @class(['nav-link', 'active' => request()->routeIs('dashboard'), 'text-white' => ! request()->routeIs('dashboard')])>
             Proyecto
         </a>
-        <a href="{{ route('projects.index') }}"
-           @class(['nav-link', 'active' => request()->routeIs('projects.*'), 'text-white' => ! request()->routeIs('projects.*')])>
-            Projectes
-        </a>
         <a href="{{ route('roles') }}"
            @class(['nav-link', 'active' => request()->routeIs('roles'), 'text-white' => ! request()->routeIs('roles')])>
             Rols
