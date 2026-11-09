@@ -17,6 +17,15 @@
         <a href="#" class="nav-link text-white">
             Tasques
         </a>
+        <a href="{{ route('tauler') }}" class="nav-link text-white">
+            Tauler
+        </a>
+        <a href="{{ route('calendari') }}" class="nav-link text-white">
+            Calendari
+        </a>
+        <a href="{{ route('analitiques') }}" class="nav-link text-white">
+            Analítiques
+        </a>
     </nav>
 
     <footer class="mt-auto">
