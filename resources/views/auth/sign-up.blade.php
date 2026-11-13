@@ -35,7 +35,7 @@
             <h2 class="fw-bold mb-3">Crear cuenta</h2>
             <p class="text-secondary mb-4">Introduce tus datos para continuar</p>
 
-            <form method="POST" action="{{ route('login.store') }}">
+            <form method="POST" action="{{ route('sign.up.store') }}">
                 @csrf
 
                 <div class="mb-3">
@@ -70,12 +70,17 @@
                     </div>
                 </div>
 
-                <div class="form-check mb-4">
-                    <input type="checkbox" id="remember" name="remember"
-                           class="form-check-input" @checked(old('remember'))>
-                    <label for="remember" class="form-check-label text-secondary">
-                        Recordar
+                <div class="mb-4">
+                    <label for="password_confirmation" class="form-label text-secondary">
+                        Confirmar contraseña
                     </label>
+                    <input type="password" id="password_confirmation" name="password_confirmation"
+                           class="form-control form-control-lg"
+                           placeholder="••••••••" required>
+
+                    @error('password')
+                        <p class="text-danger small mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-lg w-100 fw-semibold text-white">

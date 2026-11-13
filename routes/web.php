@@ -16,6 +16,9 @@ Route::post('/login', [AuthController::class, 'login'])
 Route::view('/sign-up', 'auth.sign-up')
     ->name('sign.up');
 
+Route::post('/sign-up', [AuthController::class, 'signup'])
+    ->name('sign.up.store');
+
 Route::middleware('auth')->group(function (): void {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
