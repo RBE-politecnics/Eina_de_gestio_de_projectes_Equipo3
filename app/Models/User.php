@@ -19,7 +19,7 @@ class User extends Authenticatable
         'password',
     ];
 
-    protected $table = 'Users';
+    protected $table = 'users';
 
     public $timestamps = false;
 

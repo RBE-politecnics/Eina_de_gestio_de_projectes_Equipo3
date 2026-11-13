@@ -12,15 +12,17 @@ class ProjectSeeder extends Seeder
         DB::table('projects')->insert([
             [
                 'nom' => 'melapela',
-                'Color' => '#198754',
+                'color' => '#198754',
                 'created_at' => now(),
                 'updated_at' => now(),
+                'descripcion' => 'Descripción del proyecto melapela',
             ],
             [
                 'nom' => 'nomelapela',
-                'Color' => '#0d6efd',
+                'color' => '#0d6efd',
                 'created_at' => now(),
                 'updated_at' => now(),
+                'descripcion' => 'Descripción del proyecto nomelapela',
             ],
         ]);
     }

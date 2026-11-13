@@ -13,11 +13,21 @@ Route::view('/login', 'auth.login')
 Route::post('/login', [AuthController::class, 'login'])
     ->name('login.store');
 
+Route::view('/sign-up', 'auth.sign-up')
+    ->name('sign.up');
+
 Route::middleware('auth')->group(function (): void {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::view('/dashboard', 'pages.main-dashboard')->name('dashboard');
     Route::view('/roles', 'pages.roles')->name('roles');
 
-    Route::resource('projects', ProjectController::class);
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+});
+
+// Vistes del projecte (Alex): tauler Kanban, calendari i analítiques
+Route::middleware('auth')->group(function (): void {
+    Route::view('/tauler', 'projects.tauler')->name('tauler');
+    Route::view('/calendari', 'pages.calendari')->name('calendari');
+    Route::view('/analitiques', 'pages.analitiques')->name('analitiques');
 });
