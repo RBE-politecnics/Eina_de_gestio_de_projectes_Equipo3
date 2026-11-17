@@ -4,7 +4,9 @@
     <link rel="stylesheet" href="{{ asset('css/vistes.css') }}">
 
     @php
-        // Dades d'exemple fins que el backend estigui fet
+        $projectesDisponibles = \App\Models\Projects::query()->orderBy('nom')->get();
+        $estatsDisponibles = \App\Models\Estats::query()->orderBy('id')->get();
+
         $estats = [
             'per-fer' => 'Per fer',
             'en-progres' => 'En progrés',
@@ -19,15 +21,26 @@
             'qa' => 'QA',
         ];
 
-        $tasques = [
-            ['titol' => 'Definir estructura de la web', 'tipus' => 'disseny', 'estat' => 'feta', 'responsable' => 'Alex Campano', 'data' => '03/11/2026', 'descripcio' => 'Decidir quines pantalles té l\'aplicació.'],
-            ['titol' => 'Dissenyar mockups', 'tipus' => 'disseny', 'estat' => 'feta', 'responsable' => 'Marc García', 'data' => '04/11/2026', 'descripcio' => 'Passar el wireframe als colors del manual.'],
-            ['titol' => 'Vista del tauler Kanban', 'tipus' => 'frontend', 'estat' => 'en-progres', 'responsable' => 'Alex Campano', 'data' => '12/11/2026', 'descripcio' => 'Columnes per estat i tasques que es poden arrossegar.'],
-            ['titol' => 'CRUD de tasques', 'tipus' => 'backend', 'estat' => 'en-progres', 'responsable' => 'Roc Burnat', 'data' => '14/11/2026', 'descripcio' => 'Crear, modificar i eliminar tasques des del servidor.'],
-            ['titol' => 'Taula de tipus de tasca', 'tipus' => 'bd', 'estat' => 'per-fer', 'responsable' => 'Roc Burnat', 'data' => '15/11/2026', 'descripcio' => 'Afegir la taula de tipus amb el nom i el color.'],
-            ['titol' => 'Vista del calendari', 'tipus' => 'frontend', 'estat' => 'per-fer', 'responsable' => 'Alex Campano', 'data' => '18/11/2026', 'descripcio' => 'Mostrar les dates de lliurament en un mes.'],
-            ['titol' => 'Provar el login', 'tipus' => 'qa', 'estat' => 'per-fer', 'responsable' => 'Marc García', 'data' => '20/11/2026', 'descripcio' => 'Comprovar que els errors es mostren bé.'],
-        ];
+        $tasques = \App\Models\Tasques::query()
+            ->with(['estat', 'usuari'])
+            ->latest()
+            ->get()
+            ->map(function (\App\Models\Tasques $tasca): array {
+                $estat = strtolower($tasca->estat?->nom ?? '');
+
+                return [
+                    'titol' => $tasca->nom,
+                    'tipus' => 'backend',
+                    'estat' => match ($estat) {
+                        'en curs' => 'en-progres',
+                        'completada' => 'feta',
+                        default => 'per-fer',
+                    },
+                    'responsable' => $tasca->usuari?->email ?? 'Sense assignar',
+                    'data' => $tasca->data_finalitzacio?->format('d/m/Y') ?? 'Sense data',
+                    'descripcio' => $tasca->comentaris ?? '',
+                ];
+            });
     @endphp
 
     <div class="container-fluid bg-dark min-vh-100">
@@ -111,31 +124,36 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tancar"></button>
                 </div>
 
-                <form id="formNovaTasca">
+                <form id="formNovaTasca" method="POST" action="{{ route('tasques.store') }}">
+                    @csrf
                     <div class="modal-body">
-                        <label for="novaTitol" class="form-label">Títol</label>
-                        <input id="novaTitol" type="text" class="form-control mb-3" required>
-
-                        <label for="novaDescripcio" class="form-label">Descripció</label>
-                        <textarea id="novaDescripcio" class="form-control mb-3" rows="2"></textarea>
-
-                        <label for="novaTipus" class="form-label">Tipus</label>
-                        <select id="novaTipus" class="form-select mb-3">
-                            @foreach ($tipus as $clau => $nom)
-                                <option value="{{ $clau }}">{{ $nom }}</option>
+                        <label for="novaProjecte" class="form-label">Projecte</label>
+                        <select id="novaProjecte" name="projecte_id" class="form-select mb-3" required>
+                            <option value="">Selecciona un projecte</option>
+                            @foreach ($projectesDisponibles as $projecte)
+                                <option value="{{ $projecte->id }}">{{ $projecte->nom }}</option>
                             @endforeach
                         </select>
 
-                        <label for="novaResponsable" class="form-label">Responsable</label>
-                        <select id="novaResponsable" class="form-select mb-3">
-                            <option>Alex Campano</option>
-                            <option>Marc García</option>
-                            <option>Roc Burnat</option>
-                            <option>Daniel Diez</option>
+                        <label for="novaTitol" class="form-label">Títol</label>
+                        <input id="novaTitol" name="nom" type="text" class="form-control mb-3" required>
+
+                        <label for="novaDescripcio" class="form-label">Descripció</label>
+                        <textarea id="novaDescripcio" name="comentaris" class="form-control mb-3" rows="2"></textarea>
+
+                        <label for="novaEstat" class="form-label">Estat</label>
+                        <select id="novaEstat" name="estats_id" class="form-select mb-3" required>
+                            <option value="">Selecciona un estat</option>
+                            @foreach ($estatsDisponibles as $estat)
+                                <option value="{{ $estat->id }}">{{ $estat->nom }}</option>
+                            @endforeach
                         </select>
 
                         <label for="novaData" class="form-label">Data de lliurament</label>
-                        <input id="novaData" type="date" class="form-control" required>
+                        <input id="novaData" name="data_finalitzacio" type="date" class="form-control">
+
+                        <input type="hidden" name="progres" value="0">
+                        <input type="hidden" name="color" value="#FFFFFF">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel·lar</button>

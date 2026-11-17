@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TasquesController;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login')
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function (): void {
     Route::view('/roles', 'pages.roles')->name('roles');
 
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::post('/tasques', [TasquesController::class, 'store'])->name('tasques.store');
 });
 
 // Vistes del projecte (Alex): tauler Kanban, calendari i analítiques
