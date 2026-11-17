@@ -3,14 +3,6 @@
 const columnes = document.querySelectorAll('.columna');
 let tascaArrossegada = null;
 
-const nomsTipus = {
-    disseny: 'Disseny',
-    frontend: 'Front-end',
-    backend: 'Back-end',
-    bd: 'Base de dades',
-    qa: 'QA'
-};
-
 function actualitzarComptadors() {
     columnes.forEach(function (columna) {
         columna.querySelector('.comptador').textContent = columna.querySelectorAll('.tasca').length;
@@ -75,61 +67,6 @@ columnes.forEach(function (columna) {
         tascaArrossegada = null;
         actualitzarComptadors();
     });
-});
-
-// Crear una tasca nova a la columna «Per fer»
-const formulari = document.querySelector('#formNovaTasca');
-
-formulari.addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    const clauTipus = document.querySelector('#novaTipus').value;
-    const nomTipus = nomsTipus[clauTipus];
-    const titol = document.querySelector('#novaTitol').value;
-    const responsable = document.querySelector('#novaResponsable').value;
-
-    // La data del formulari ve com 2026-11-20 i la volem com 20/11/2026
-    const parts = document.querySelector('#novaData').value.split('-');
-    const data = parts[2] + '/' + parts[1] + '/' + parts[0];
-
-    const tasca = document.createElement('article');
-    tasca.classList.add('tasca');
-    tasca.classList.add('vora-' + clauTipus);
-    tasca.setAttribute('draggable', 'true');
-    tasca.setAttribute('data-bs-toggle', 'modal');
-    tasca.setAttribute('data-bs-target', '#modalTasca');
-    tasca.dataset.estat = 'per-fer';
-    tasca.dataset.titol = titol;
-    tasca.dataset.tipus = nomTipus;
-    tasca.dataset.responsable = responsable;
-    tasca.dataset.data = data;
-    tasca.dataset.descripcio = document.querySelector('#novaDescripcio').value;
-
-    const etiqueta = document.createElement('span');
-    etiqueta.classList.add('tipus');
-    etiqueta.classList.add('tipus-' + clauTipus);
-    etiqueta.textContent = nomTipus;
-
-    const textTitol = document.createElement('p');
-    textTitol.classList.add('tasca-titol');
-    textTitol.textContent = titol;
-
-    const textPeu = document.createElement('small');
-    textPeu.classList.add('text-secondary');
-    textPeu.textContent = data + ' · ' + responsable;
-
-    tasca.appendChild(etiqueta);
-    tasca.appendChild(textTitol);
-    tasca.appendChild(textPeu);
-
-    document.querySelector('.columna[data-estat="per-fer"] .columna-tasques').appendChild(tasca);
-    prepararTasca(tasca);
-    actualitzarComptadors();
-
-    document.querySelector('#novaTitol').value = '';
-    document.querySelector('#novaDescripcio').value = '';
-    document.querySelector('#novaData').value = '';
-    document.querySelector('#modalNovaTasca .btn-close').click();
 });
 
 actualitzarComptadors();
