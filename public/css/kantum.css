@@ -1,0 +1,452 @@
+/* Tema de Kantum: colors, tipografia i components comuns (segons el manual d'identitat i el wireframe) */
+
+:root {
+    --kantum-fosc: #1E232E;
+    --kantum-blau: #007BFF;
+    --kantum-coral: #FF6B6B;
+
+    /* Sobreescriu les variables del CSS de l'equip */
+    --kantum-background: #1E232E;
+    --kantum-panel: #2A303D;
+    --kantum-panel-light: #343B4A;
+    --kantum-form-panel: #1E232E;
+    --kantum-border: #3A4150;
+    --kantum-muted: #8D95A8;
+    --kantum-primary: #007BFF;
+
+    --bs-body-font-family: 'Manrope', sans-serif;
+    --bs-primary: #007BFF;
+    --bs-primary-rgb: 0, 123, 255;
+}
+
+body {
+    font-family: 'Manrope', sans-serif;
+    background-color: var(--kantum-fosc);
+    color: #fff;
+}
+
+/* Colors de Bootstrap que fa servir l'equip */
+
+.bg-dark {
+    --bs-dark-rgb: 30, 35, 46;
+}
+
+.bg-secondary {
+    --bs-secondary-rgb: 42, 48, 61;
+}
+
+.text-secondary {
+    color: var(--kantum-muted) !important;
+}
+
+.form-control,
+.form-select {
+    border-color: var(--kantum-border);
+    background-color: var(--kantum-panel);
+    color: #fff;
+    border-radius: 0.75rem;
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: var(--kantum-blau);
+    background-color: var(--kantum-panel);
+    color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.2);
+}
+
+.btn {
+    border-radius: 0.75rem;
+    font-weight: 600;
+}
+
+.btn-primary {
+    --bs-btn-bg: #007BFF;
+    --bs-btn-border-color: #007BFF;
+    --bs-btn-hover-bg: #1a8cff;
+    --bs-btn-hover-border-color: #1a8cff;
+    --bs-btn-active-bg: #0066d6;
+    --bs-btn-active-border-color: #0066d6;
+    background-color: var(--kantum-blau);
+    border-color: var(--kantum-blau);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #1a8cff;
+    border-color: #1a8cff;
+}
+
+.modal-content {
+    border: 1px solid var(--kantum-border);
+    border-radius: 1rem;
+}
+
+/* Barra lateral */
+
+.kt-sidebar {
+    background-color: var(--kantum-fosc);
+    border-right: 1px solid var(--kantum-border);
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.kt-marca {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.75rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+.kt-marca img {
+    width: 34px;
+    height: 34px;
+    border-radius: 0.5rem;
+}
+
+.kt-marca span {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.kt-etiqueta {
+    color: var(--kantum-muted);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0.75rem 0.5rem;
+}
+
+.kt-enllac {
+    display: block;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.75rem;
+    border-right: 3px solid transparent;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.kt-enllac:hover {
+    background-color: var(--kantum-panel);
+    color: #fff;
+}
+
+.kt-enllac.actiu {
+    background-color: rgba(0, 123, 255, 0.15);
+    border-right-color: var(--kantum-blau);
+    color: var(--kantum-blau);
+}
+
+.kt-usuari {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: auto;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    background-color: var(--kantum-panel);
+}
+
+.kt-usuari-correu {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.kt-sortir {
+    border: 0;
+    background: transparent;
+    color: var(--kantum-muted);
+    font-size: 0.75rem;
+}
+
+.kt-sortir:hover {
+    color: var(--kantum-coral);
+}
+
+.kt-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background-color: var(--kantum-blau);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+/* En mòbil la barra lateral és una franja a dalt */
+
+@media (max-width: 767px) {
+    .kt-sidebar {
+        min-height: auto !important;
+        border-right: 0;
+        border-bottom: 1px solid var(--kantum-border);
+        padding: 0.75rem;
+    }
+
+    .kt-marca {
+        margin-bottom: 0.75rem;
+    }
+
+    .kt-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+
+    .kt-menu .kt-enllac {
+        margin: 0;
+        border-right: 0;
+        padding: 0.4rem 0.7rem;
+        font-size: 0.8rem;
+    }
+
+    .kt-menu .kt-etiqueta {
+        display: none;
+    }
+
+    .kt-usuari {
+        margin-top: 0.75rem;
+    }
+}
+
+/* Capçalera de pàgina */
+
+.kt-capcalera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+}
+
+.kt-capcalera h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.kt-data {
+    color: var(--kantum-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+/* Targetes */
+
+.kt-targeta {
+    background-color: var(--kantum-panel);
+    border: 1px solid var(--kantum-border);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+}
+
+.kt-projecte {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: #fff;
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.kt-projecte:hover {
+    border-color: var(--projecte-color, var(--kantum-blau));
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.kt-icona {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.9rem;
+    background-color: var(--kantum-fosc);
+    color: var(--projecte-color, var(--kantum-blau));
+    font-weight: 800;
+}
+
+.kt-progres {
+    height: 0.4rem;
+    border-radius: 999px;
+    background-color: var(--kantum-fosc);
+    overflow: hidden;
+}
+
+.kt-progres div {
+    height: 100%;
+    border-radius: 999px;
+    background-color: var(--projecte-color, var(--kantum-blau));
+}
+
+.kt-resum {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.kt-etiqueta-rodona {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid var(--kantum-border);
+    border-radius: 999px;
+    color: var(--kantum-muted);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+/* Taules */
+
+.kt-taula {
+    --bs-table-bg: transparent;
+    --bs-table-color: #fff;
+    --bs-table-border-color: var(--kantum-border);
+    margin: 0;
+}
+
+.kt-taula th {
+    color: var(--kantum-muted);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.kt-taula td,
+.kt-taula th {
+    padding: 0.9rem 0.5rem;
+    vertical-align: middle;
+}
+
+.kt-rol {
+    display: inline-block;
+    padding: 0.15rem 0.7rem;
+    border: 1px solid var(--kantum-border);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.kt-rol.admin {
+    border-color: var(--kantum-blau);
+    color: var(--kantum-blau);
+}
+
+/* Pantalles d'entrada (login i registre) */
+
+.kt-entrada {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background-color: var(--kantum-fosc);
+}
+
+.kt-entrada-caixa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 960px;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.35);
+}
+
+.kt-entrada-esquerra {
+    background-color: var(--kantum-panel);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.kt-entrada-dreta {
+    background-color: var(--kantum-fosc);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid var(--kantum-panel);
+}
+
+.kt-entrada-esquerra h1 {
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin: 1.5rem 0 1rem;
+}
+
+.kt-llista {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.kt-llista li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+    font-size: 0.9rem;
+}
+
+.kt-llista li::before {
+    content: '✓';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.4rem;
+    background-color: var(--kantum-fosc);
+    color: var(--kantum-blau);
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.kt-peu {
+    margin-top: auto;
+    color: var(--kantum-muted);
+    font-size: 0.75rem;
+}
+
+@media (max-width: 767px) {
+    .kt-entrada-caixa {
+        grid-template-columns: 1fr;
+    }
+
+    .kt-entrada-esquerra,
+    .kt-entrada-dreta {
+        padding: 1.5rem;
+    }
+
+    .kt-entrada-esquerra h1 {
+        font-size: 1.6rem;
+    }
+}

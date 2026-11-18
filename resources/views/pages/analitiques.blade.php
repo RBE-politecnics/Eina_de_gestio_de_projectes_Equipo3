@@ -4,39 +4,41 @@
     <link rel="stylesheet" href="{{ asset('css/vistes.css') }}">
 
     @php
-        // Dades d'exemple fins que el backend estigui fet
-        $tasques = [
-            ['tipus' => 'disseny', 'estat' => 'feta', 'responsable' => 'Alex Campano'],
-            ['tipus' => 'disseny', 'estat' => 'feta', 'responsable' => 'Marc García'],
-            ['tipus' => 'frontend', 'estat' => 'en-progres', 'responsable' => 'Alex Campano'],
-            ['tipus' => 'backend', 'estat' => 'en-progres', 'responsable' => 'Roc Burnat'],
-            ['tipus' => 'bd', 'estat' => 'per-fer', 'responsable' => 'Roc Burnat'],
-            ['tipus' => 'frontend', 'estat' => 'per-fer', 'responsable' => 'Alex Campano'],
-            ['tipus' => 'qa', 'estat' => 'per-fer', 'responsable' => 'Marc García'],
-            ['tipus' => 'frontend', 'estat' => 'feta', 'responsable' => 'Marc García'],
-        ];
+        // Tasques dels projectes de l'usuari
+        $idsProjectes = \App\Models\Projecte_Usuari::where('users_id', auth()->id())->pluck('projecte_id');
+        $tasquesBD = \App\Models\Tasques::with(['estat', 'usuari'])->whereIn('projecte_id', $idsProjectes)->get();
 
-        $tipus = ['disseny' => 'Disseny', 'frontend' => 'Front-end', 'backend' => 'Back-end', 'bd' => 'Base de dades', 'qa' => 'QA'];
+        $estats = ['per-fer' => 'Per fer', 'en-progres' => 'En progrés', 'feta' => 'Feta'];
 
         // Comptadors: comencen a 0 i sumem 1 per cada tasca
-        $total = count($tasques);
+        $total = $tasquesBD->count();
         $fetes = 0;
         $enProgres = 0;
-        $perTipus = ['disseny' => 0, 'frontend' => 0, 'backend' => 0, 'bd' => 0, 'qa' => 0];
-        $perPersona = ['Alex Campano' => 0, 'Marc García' => 0, 'Roc Burnat' => 0, 'Daniel Diez' => 0];
+        $perEstat = ['per-fer' => 0, 'en-progres' => 0, 'feta' => 0];
+        $perPersona = [];
 
-        foreach ($tasques as $tasca) {
-            if ($tasca['estat'] == 'feta') {
+        foreach ($tasquesBD as $tasca) {
+            $nomEstat = strtolower($tasca->estat?->nom ?? '');
+
+            if ($nomEstat == 'completada') {
+                $clauEstat = 'feta';
                 $fetes++;
-            }
-            if ($tasca['estat'] == 'en-progres') {
+            } elseif ($nomEstat == 'en curs') {
+                $clauEstat = 'en-progres';
                 $enProgres++;
+            } else {
+                $clauEstat = 'per-fer';
             }
-            $perTipus[$tasca['tipus']]++;
-            $perPersona[$tasca['responsable']]++;
+
+            $perEstat[$clauEstat]++;
+
+            $persona = $tasca->usuari?->email ?? 'Sense assignar';
+            $perPersona[$persona] = ($perPersona[$persona] ?? 0) + 1;
         }
 
-        $percentatgeFet = round($fetes * 100 / $total);
+        // Evitem dividir per zero si encara no hi ha tasques
+        $divisor = $total > 0 ? $total : 1;
+        $percentatgeFet = round($fetes * 100 / $divisor);
     @endphp
 
     <div class="container-fluid bg-dark min-vh-100">
@@ -45,7 +47,7 @@
             @include('components.sidebar')
 
             <main class="col-12 col-md-9 col-lg-10 p-4">
-                <h1 class="text-white mb-4">Analítiques</h1>
+                <h1 class="mb-4">Analítiques</h1>
 
                 <div class="row g-4 mb-4">
                     <div class="col-6 col-xl-3">
@@ -77,15 +79,15 @@
                 <div class="row g-4">
                     <div class="col-12 col-xl-6">
                         <div class="targeta-dada">
-                            <h2 class="h5 text-white mb-4">Tasques per tipus</h2>
+                            <h2 class="h5 text-white mb-4">Tasques per estat</h2>
 
-                            @foreach ($perTipus as $clau => $quantitat)
+                            @foreach ($perEstat as $clau => $quantitat)
                                 <div class="d-flex justify-content-between small text-white">
-                                    <span>{{ $tipus[$clau] }}</span>
+                                    <span>{{ $estats[$clau] }}</span>
                                     <span>{{ $quantitat }}</span>
                                 </div>
                                 <div class="progress mb-3">
-                                    <div class="progress-bar tipus-{{ $clau }}" style="width: {{ $quantitat * 100 / $total }}%"></div>
+                                    <div class="progress-bar" style="width: {{ $quantitat * 100 / $divisor }}%"></div>
                                 </div>
                             @endforeach
                         </div>
@@ -101,7 +103,7 @@
                                     <span>{{ $quantitat }}</span>
                                 </div>
                                 <div class="progress mb-3">
-                                    <div class="progress-bar" style="width: {{ $quantitat * 100 / $total }}%"></div>
+                                    <div class="progress-bar" style="width: {{ $quantitat * 100 / $divisor }}%"></div>
                                 </div>
                             @endforeach
                         </div>
