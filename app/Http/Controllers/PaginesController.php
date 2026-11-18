@@ -41,8 +41,14 @@ class PaginesController
         $projecte = $projectes->firstWhere('id', $projecteId) ?? $projectes->first();
 
         $tasques = collect();
+        $esAdmin = false;
 
         if ($projecte) {
+            $esAdmin = Projecte_Usuari::where('projecte_id', $projecte->id)
+                ->where('users_id', Auth::id())
+                ->where('rols_id', Rols::where('nom', 'Administrador')->value('id'))
+                ->exists();
+
             $tasques = Tasques::with(['estat', 'usuari'])
                 ->where('projecte_id', $projecte->id)
                 ->latest()
@@ -53,6 +59,7 @@ class PaginesController
             'projectes' => $projectes,
             'projecte' => $projecte,
             'tasquesProjecte' => $tasques,
+            'esAdmin' => $esAdmin,
             'estatsDisponibles' => Estats::orderBy('id')->get(),
         ]);
     }

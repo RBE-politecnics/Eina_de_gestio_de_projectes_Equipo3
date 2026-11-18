@@ -43,4 +43,6 @@ Route::middleware('auth')->group(function (): void {
     Route::get('/projectes', [PaginesController::class, 'projectes'])->name('projectes');
     Route::get('/equip', [PaginesController::class, 'equip'])->name('equip');
     Route::post('/equip', [PaginesController::class, 'afegirMembre'])->name('equip.afegir');
+    Route::put('/tasques/{tasca}', [TasquesController::class, 'update'])->name('tasques.update');
+    Route::delete('/tasques/{tasca}', [TasquesController::class, 'destroy'])->name('tasques.destroy');
 });

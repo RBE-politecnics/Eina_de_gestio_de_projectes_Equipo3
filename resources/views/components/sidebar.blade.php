@@ -10,11 +10,8 @@
         <a href="{{ route('dashboard') }}" @class(['kt-enllac', 'actiu' => request()->routeIs('dashboard')])>
             Dashboard
         </a>
-        <a href="{{ route('projectes') }}" @class(['kt-enllac', 'actiu' => request()->routeIs('projectes')])>
+        <a href="{{ route('projectes') }}" @class(['kt-enllac', 'actiu' => request()->routeIs('projectes', 'tauler')])>
             Els meus projectes
-        </a>
-        <a href="{{ route('tauler') }}" @class(['kt-enllac', 'actiu' => request()->routeIs('tauler')])>
-            Tauler
         </a>
         <a href="{{ route('calendari') }}" @class(['kt-enllac', 'actiu' => request()->routeIs('calendari')])>
             Calendari

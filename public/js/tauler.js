@@ -1,4 +1,4 @@
-// Tauler Kanban: arrossegar tasques, veure el detall i crear tasques noves
+// Tauler Kanban: arrossegar tasques, veure el detall i editar-les
 
 const columnes = document.querySelectorAll('.columna');
 let tascaArrossegada = null;
@@ -21,10 +21,28 @@ function mostrarDetall(tasca) {
     document.querySelector('#detallEstat').textContent = columna.dataset.nom;
 
     const avis = document.querySelector('#detallBloqueig');
+    const sensePermis = document.querySelector('#detallSensePermis');
+    const zonaEditar = document.querySelector('#zonaEditar');
+
+    avis.classList.add('d-none');
+    sensePermis.classList.add('d-none');
+    zonaEditar.classList.add('d-none');
+
     if (tasca.dataset.estat == 'feta') {
         avis.classList.remove('d-none');
+    } else if (tasca.dataset.pot == '0') {
+        sensePermis.classList.remove('d-none');
     } else {
-        avis.classList.add('d-none');
+        // Omplim el formulari d'edició amb les dades de la tasca
+        const formulari = document.querySelector('#formEditarTasca');
+        formulari.action = formulari.dataset.base + '/' + tasca.dataset.id;
+        document.querySelector('#editTitol').value = tasca.dataset.titol;
+        document.querySelector('#editDescripcio').value = tasca.dataset.descripcio;
+        document.querySelector('#editEstat').value = tasca.dataset.estatId;
+        document.querySelector('#editData').value = tasca.dataset.dataIso;
+
+        document.querySelector('#formEliminarTasca').action = formulari.dataset.base + '/' + tasca.dataset.id;
+        zonaEditar.classList.remove('d-none');
     }
 }
 
@@ -56,16 +74,17 @@ columnes.forEach(function (columna) {
             return;
         }
 
-        columna.querySelector('.columna-tasques').appendChild(tascaArrossegada);
-        tascaArrossegada.dataset.estat = columna.dataset.estat;
-
-        if (columna.dataset.estat == 'feta') {
-            tascaArrossegada.setAttribute('draggable', 'false');
-            tascaArrossegada.classList.add('bloquejada');
+        // Si la deixem a la mateixa columna no cal fer res
+        if (tascaArrossegada.dataset.estat == columna.dataset.estat) {
+            tascaArrossegada = null;
+            return;
         }
 
-        tascaArrossegada = null;
-        actualitzarComptadors();
+        // Enviem el nou estat al servidor amb el formulari amagat
+        const formulari = document.querySelector('#formMoure');
+        formulari.action = formulari.dataset.base + '/' + tascaArrossegada.dataset.id;
+        document.querySelector('#moureEstat').value = columna.dataset.estatId;
+        formulari.submit();
     });
 });
 

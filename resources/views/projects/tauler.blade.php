@@ -10,6 +10,21 @@
             'feta' => 'Feta',
         ];
 
+        // Id de l'estat de cada columna (el busquem pel nom que té a la BD)
+        $idColumna = [];
+        foreach ($estatsDisponibles as $estatBD) {
+            $clau = match ($estatBD->nom) {
+                'Pendent', 'Per fer' => 'per-fer',
+                'En curs', 'En progrés' => 'en-progres',
+                'Completada', 'Feta' => 'feta',
+                default => null,
+            };
+
+            if ($clau) {
+                $idColumna[$clau] = $estatBD->id;
+            }
+        }
+
         $tipus = [
             'disseny' => 'Disseny',
             'frontend' => 'Front-end',
@@ -19,10 +34,14 @@
         ];
 
         $tasques = $tasquesProjecte
-            ->map(function (\App\Models\Tasques $tasca): array {
+            ->map(function (\App\Models\Tasques $tasca) use ($esAdmin): array {
                 $estat = strtolower($tasca->estat?->nom ?? '');
 
                 return [
+                    'id' => $tasca->id,
+                    'estatId' => $tasca->estats_id,
+                    'dataIso' => $tasca->data_finalitzacio?->format('Y-m-d') ?? '',
+                    'pot' => $esAdmin || $tasca->users_id == auth()->id(),
                     'titol' => $tasca->nom,
                     'tipus' => 'backend',
                     'estat' => match ($estat) {
@@ -72,9 +91,18 @@
                     <div class="alert alert-success">{{ session('status') }}</div>
                 @endif
 
+                @if (session('error'))
+                    <div class="alert alert-danger">{{ session('error') }}</div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">{{ $errors->first() }}</div>
+                @endif
+
                 <div class="tauler">
                     @foreach ($estats as $clauEstat => $nomEstat)
-                        <section class="columna" data-estat="{{ $clauEstat }}" data-nom="{{ $nomEstat }}">
+                        <section class="columna" data-estat="{{ $clauEstat }}" data-nom="{{ $nomEstat }}"
+                            data-estat-id="{{ $idColumna[$clauEstat] ?? '' }}">
                             <h2 class="h6 text-white">
                                 {{ $nomEstat }} <span class="comptador">0</span>
                             </h2>
@@ -83,8 +111,12 @@
                                 @foreach ($tasques as $tasca)
                                     @if ($tasca['estat'] == $clauEstat)
                                         <article class="tasca vora-{{ $tasca['tipus'] }} {{ $clauEstat == 'feta' ? 'bloquejada' : '' }}"
-                                            draggable="{{ $clauEstat == 'feta' ? 'false' : 'true' }}"
+                                            draggable="{{ $clauEstat != 'feta' && $tasca['pot'] ? 'true' : 'false' }}"
                                             data-bs-toggle="modal" data-bs-target="#modalTasca"
+                                            data-id="{{ $tasca['id'] }}"
+                                            data-estat-id="{{ $tasca['estatId'] }}"
+                                            data-data-iso="{{ $tasca['dataIso'] }}"
+                                            data-pot="{{ $tasca['pot'] ? '1' : '0' }}"
                                             data-estat="{{ $tasca['estat'] }}"
                                             data-titol="{{ $tasca['titol'] }}"
                                             data-tipus="{{ $tipus[$tasca['tipus']] }}"
@@ -103,7 +135,7 @@
                 </div>
 
                 <p class="small text-secondary mt-3">
-                    Arrossega les tasques per canviar-ne l'estat. Les tasques de «Feta» ja no es poden moure.
+                    Arrossega les teves tasques per canviar-ne l'estat, o fes clic en una per editar-la. Les tasques de «Feta» ja no es poden canviar.
                 </p>
                 @endif
             </main>
@@ -125,12 +157,56 @@
                     <p class="mb-1"><strong>Responsable:</strong> <span id="detallResponsable"></span></p>
                     <p class="mb-1"><strong>Data de lliurament:</strong> <span id="detallData"></span></p>
                     <p id="detallBloqueig" class="small missatge-bloqueig mt-3 d-none">
-                        Aquesta tasca està feta i ja no es pot canviar d'estat.
+                        Aquesta tasca està feta i ja no es pot canviar.
                     </p>
+                    <p id="detallSensePermis" class="small text-secondary mt-3 d-none">
+                        Només el responsable de la tasca o l'administrador la poden editar.
+                    </p>
+
+                    <div id="zonaEditar" class="d-none border-top pt-3 mt-3">
+                        <h6 class="mb-3">Editar tasca</h6>
+
+                        <form id="formEditarTasca" method="POST" action="" data-base="{{ url('/tasques') }}">
+                            @csrf
+                            @method('PUT')
+
+                            <label for="editTitol" class="form-label">Títol</label>
+                            <input id="editTitol" name="nom" type="text" class="form-control mb-3" required>
+
+                            <label for="editDescripcio" class="form-label">Descripció</label>
+                            <textarea id="editDescripcio" name="comentaris" class="form-control mb-3" rows="2"></textarea>
+
+                            <label for="editEstat" class="form-label">Estat</label>
+                            <select id="editEstat" name="estats_id" class="form-select mb-3" required>
+                                @foreach ($estatsDisponibles as $estat)
+                                    <option value="{{ $estat->id }}">{{ $estat->nom }}</option>
+                                @endforeach
+                            </select>
+
+                            <label for="editData" class="form-label">Data de lliurament</label>
+                            <input id="editData" name="data_finalitzacio" type="date" class="form-control mb-3">
+
+                            <button type="submit" class="btn btn-primary">Desar canvis</button>
+                        </form>
+
+                        <form id="formEliminarTasca" method="POST" action="" class="mt-2"
+                              onsubmit="return confirm('Segur que vols eliminar aquesta tasca?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger">Eliminar tasca</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {{-- Formulari amagat: el fa servir el JS quan s'arrossega una tasca --}}
+    <form id="formMoure" method="POST" action="" data-base="{{ url('/tasques') }}" class="d-none">
+        @csrf
+        @method('PUT')
+        <input type="hidden" id="moureEstat" name="estats_id">
+    </form>
 
     {{-- Formulari de tasca nova --}}
     <div class="modal fade" id="modalNovaTasca" tabindex="-1" aria-labelledby="novaTascaTitol" aria-hidden="true">
