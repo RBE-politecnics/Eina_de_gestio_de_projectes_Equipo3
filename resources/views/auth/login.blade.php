@@ -6,7 +6,7 @@
 
         <div class="kt-entrada-esquerra">
             <div class="kt-marca">
-                <img src="{{ Vite::asset('resources/assets/logo-kantum.png') }}" alt="">
+                <img src="{{ Vite::asset('resources/assets/logo-kantum.svg') }}" alt="">
                 <span>KANTUM</span>
             </div>
 
