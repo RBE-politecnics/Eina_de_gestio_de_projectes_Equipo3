@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaginesController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TasquesController;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,16 @@ Route::middleware('auth')->group(function (): void {
 
 // Vistes del projecte (Alex): tauler Kanban, calendari i analítiques
 Route::middleware('auth')->group(function (): void {
-    Route::view('/tauler', 'projects.tauler')->name('tauler');
+    Route::get('/tauler/{projecteId?}', [PaginesController::class, 'tauler'])->whereNumber('projecteId')->name('tauler');
     Route::view('/calendari', 'pages.calendari')->name('calendari');
     Route::view('/analitiques', 'pages.analitiques')->name('analitiques');
+});
+
+// Els meus projectes i Equip (Alex)
+Route::middleware('auth')->group(function (): void {
+    Route::get('/projectes', [PaginesController::class, 'projectes'])->name('projectes');
+    Route::get('/equip', [PaginesController::class, 'equip'])->name('equip');
+    Route::post('/equip', [PaginesController::class, 'afegirMembre'])->name('equip.afegir');
+    Route::put('/tasques/{tasca}', [TasquesController::class, 'update'])->name('tasques.update');
+    Route::delete('/tasques/{tasca}', [TasquesController::class, 'destroy'])->name('tasques.destroy');
 });

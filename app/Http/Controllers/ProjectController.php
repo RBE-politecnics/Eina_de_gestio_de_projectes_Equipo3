@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Projects;
+use App\Models\Rols;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController
 {
@@ -15,8 +17,15 @@ class ProjectController
             'descripcion' => ['nullable', 'string', 'max:5000'],
         ]);
 
-        Projects::create($project);
+        $nouProjecte = Projects::create($project);
 
-        return redirect()->route('dashboard')->with('status', 'Proyecto creado correctamente.');
+        // Qui crea el projecte n'és l'administrador
+        DB::table('projecte__usuaris')->insert([
+            'projecte_id' => $nouProjecte->id,
+            'users_id' => $request->user()->id,
+            'rols_id' => Rols::where('nom', 'Administrador')->value('id') ?? DB::table('rols')->insertGetId(['nom' => 'Administrador']),
+        ]);
+
+        return redirect()->route('dashboard')->with('status', 'Projecte creat correctament.');
     }
 }

@@ -4,17 +4,13 @@
     <link rel="stylesheet" href="{{ asset('css/vistes.css') }}">
 
     @php
-        // Dades d'exemple fins que el backend estigui fet
-        $tasques = [
-            ['titol' => 'Definir estructura de la web', 'tipus' => 'disseny', 'data' => '2026-11-03'],
-            ['titol' => 'Dissenyar mockups', 'tipus' => 'disseny', 'data' => '2026-11-04'],
-            ['titol' => 'Primer desplegament', 'tipus' => 'backend', 'data' => '2026-11-10'],
-            ['titol' => 'Vista del tauler Kanban', 'tipus' => 'frontend', 'data' => '2026-11-12'],
-            ['titol' => 'CRUD de tasques', 'tipus' => 'backend', 'data' => '2026-11-14'],
-            ['titol' => 'Taula de tipus de tasca', 'tipus' => 'bd', 'data' => '2026-11-15'],
-            ['titol' => 'Vista del calendari', 'tipus' => 'frontend', 'data' => '2026-11-18'],
-            ['titol' => 'Provar el login', 'tipus' => 'qa', 'data' => '2026-11-20'],
-        ];
+        // Tasques dels projectes de l'usuari que tenen data de lliurament
+        $idsProjectes = \App\Models\Projecte_Usuari::where('users_id', auth()->id())->pluck('projecte_id');
+        $tasques = [];
+
+        foreach (\App\Models\Tasques::whereIn('projecte_id', $idsProjectes)->whereNotNull('data_finalitzacio')->get() as $tasca) {
+            $tasques[] = ['titol' => $tasca->nom, 'tipus' => 'backend', 'data' => $tasca->data_finalitzacio->format('Y-m-d')];
+        }
 
         $mesos = ['', 'Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny', 'Juliol', 'Agost', 'Setembre', 'Octubre', 'Novembre', 'Desembre'];
 
@@ -38,7 +34,7 @@
 
             <main class="col-12 col-md-9 col-lg-10 p-4">
                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-                    <h1 class="text-white">Calendari</h1>
+                    <h1>Calendari</h1>
 
                     <div class="d-flex align-items-center gap-2">
                         <a href="{{ route('calendari', ['mes' => date('n', $anterior), 'any' => date('Y', $anterior)]) }}" class="btn btn-outline-light btn-sm">←</a>
