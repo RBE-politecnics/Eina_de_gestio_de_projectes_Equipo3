@@ -4,9 +4,6 @@
     <link rel="stylesheet" href="{{ asset('css/vistes.css') }}">
 
     @php
-        $projectesDisponibles = \App\Models\Projects::query()->orderBy('nom')->get();
-        $estatsDisponibles = \App\Models\Estats::query()->orderBy('id')->get();
-
         $estats = [
             'per-fer' => 'Per fer',
             'en-progres' => 'En progrés',
@@ -21,10 +18,7 @@
             'qa' => 'QA',
         ];
 
-        $tasques = \App\Models\Tasques::query()
-            ->with(['estat', 'usuari'])
-            ->latest()
-            ->get()
+        $tasques = $tasquesProjecte
             ->map(function (\App\Models\Tasques $tasca): array {
                 $estat = strtolower($tasca->estat?->nom ?? '');
 
@@ -49,12 +43,34 @@
             @include('components.sidebar')
 
             <main class="col-12 col-md-9 col-lg-10 p-4">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="text-white">Tauler</h1>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovaTasca">
-                        + Nova tasca
-                    </button>
+                @if (! $projecte)
+                    <h1 class="mb-4">Tauler</h1>
+                    <div class="kt-targeta text-center text-secondary">
+                        Encara no participes en cap projecte. Crea'n un des del Dashboard.
+                    </div>
+                @else
+                <div class="kt-capcalera">
+                    <div>
+                        <h1>{{ $projecte->nom }}</h1>
+                        <p class="text-secondary small mb-0">{{ $tasques->count() }} tasques</p>
+                    </div>
+
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <select class="form-select w-auto" aria-label="Canvia de projecte"
+                                onchange="window.location.href = this.value">
+                            @foreach ($projectes as $opcio)
+                                <option value="{{ route('tauler', $opcio->id) }}" @selected($opcio->id == $projecte->id)>{{ $opcio->nom }}</option>
+                            @endforeach
+                        </select>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovaTasca">
+                            + Nova tasca
+                        </button>
+                    </div>
                 </div>
+
+                @if (session('status'))
+                    <div class="alert alert-success">{{ session('status') }}</div>
+                @endif
 
                 <div class="tauler">
                     @foreach ($estats as $clauEstat => $nomEstat)
@@ -89,6 +105,7 @@
                 <p class="small text-secondary mt-3">
                     Arrossega les tasques per canviar-ne l'estat. Les tasques de «Feta» ja no es poden moure.
                 </p>
+                @endif
             </main>
         </div>
     </div>
@@ -127,13 +144,7 @@
                 <form id="formNovaTasca" method="POST" action="{{ route('tasques.store') }}">
                     @csrf
                     <div class="modal-body">
-                        <label for="novaProjecte" class="form-label">Projecte</label>
-                        <select id="novaProjecte" name="projecte_id" class="form-select mb-3" required>
-                            <option value="">Selecciona un projecte</option>
-                            @foreach ($projectesDisponibles as $projecte)
-                                <option value="{{ $projecte->id }}">{{ $projecte->nom }}</option>
-                            @endforeach
-                        </select>
+                        <input type="hidden" name="projecte_id" value="{{ $projecte?->id }}">
 
                         <label for="novaTitol" class="form-label">Títol</label>
                         <input id="novaTitol" name="nom" type="text" class="form-control mb-3" required>

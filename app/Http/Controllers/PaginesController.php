@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estats;
 use App\Models\Projecte_Usuari;
 use App\Models\Projects;
 use App\Models\Rols;
@@ -28,6 +29,31 @@ class PaginesController
             'projectes' => $projectes,
             'tasques' => Tasques::whereIn('projecte_id', $idsProjectes)->get(),
             'cerca' => $request->input('q'),
+        ]);
+    }
+
+    public function tauler(?int $projecteId = null): View
+    {
+        $idsProjectes = Projecte_Usuari::where('users_id', Auth::id())->pluck('projecte_id');
+        $projectes = Projects::whereIn('id', $idsProjectes)->orderBy('nom')->get();
+
+        // Si no ens diuen quin projecte, agafem el primer de l'usuari
+        $projecte = $projectes->firstWhere('id', $projecteId) ?? $projectes->first();
+
+        $tasques = collect();
+
+        if ($projecte) {
+            $tasques = Tasques::with(['estat', 'usuari'])
+                ->where('projecte_id', $projecte->id)
+                ->latest()
+                ->get();
+        }
+
+        return view('projects.tauler', [
+            'projectes' => $projectes,
+            'projecte' => $projecte,
+            'tasquesProjecte' => $tasques,
+            'estatsDisponibles' => Estats::orderBy('id')->get(),
         ]);
     }
 

@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function (): void {
 
 // Vistes del projecte (Alex): tauler Kanban, calendari i analítiques
 Route::middleware('auth')->group(function (): void {
-    Route::view('/tauler', 'projects.tauler')->name('tauler');
+    Route::get('/tauler/{projecteId?}', [PaginesController::class, 'tauler'])->whereNumber('projecteId')->name('tauler');
     Route::view('/calendari', 'pages.calendari')->name('calendari');
     Route::view('/analitiques', 'pages.analitiques')->name('analitiques');
 });

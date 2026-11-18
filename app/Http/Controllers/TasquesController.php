@@ -24,6 +24,6 @@ class TasquesController
 
         Tasques::create($tasca);
 
-        return redirect()->route('dashboard')->with('status', 'Tasca creada correctament.');
+        return redirect()->route('tauler', $tasca['projecte_id'])->with('status', 'Tasca creada correctament.');
     }
 }

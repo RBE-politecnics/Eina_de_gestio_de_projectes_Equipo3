@@ -1,6 +1,6 @@
 <aside class="col-12 col-md-3 col-lg-2 text-white kt-sidebar min-vh-100">
     <a href="{{ route('dashboard') }}" class="kt-marca">
-        <img src="{{ Vite::asset('resources/assets/logo.png') }}" alt="">
+        <img src="{{ Vite::asset('resources/assets/logo-kantum.png') }}" alt="">
         <span>KANTUM</span>
     </a>
 

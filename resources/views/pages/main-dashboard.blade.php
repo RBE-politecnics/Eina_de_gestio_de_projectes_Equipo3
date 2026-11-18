@@ -91,7 +91,7 @@
                         @endphp
 
                         <div class="col-12 col-md-6 col-xl-4">
-                            <a href="{{ route('tauler') }}" class="kt-targeta kt-projecte" style="--projecte-color: {{ $color }};">
+                            <a href="{{ route('tauler', $project->id) }}" class="kt-targeta kt-projecte" style="--projecte-color: {{ $color }};">
                                 <span class="kt-icona mb-3">{{ strtoupper(substr($project->nom, 0, 2)) }}</span>
                                 <h3 class="h5 fw-bold">{{ $project->nom }}</h3>
                                 <p class="text-secondary small">{{ $project->descripcion ?: 'Sense descripció.' }}</p>
