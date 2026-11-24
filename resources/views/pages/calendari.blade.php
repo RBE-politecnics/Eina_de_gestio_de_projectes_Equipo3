@@ -8,8 +8,8 @@
         $idsProjectes = \App\Models\Projecte_Usuari::where('users_id', auth()->id())->pluck('projecte_id');
         $tasques = [];
 
-        foreach (\App\Models\Tasques::whereIn('projecte_id', $idsProjectes)->whereNotNull('data_finalitzacio')->get() as $tasca) {
-            $tasques[] = ['titol' => $tasca->nom, 'tipus' => 'backend', 'data' => $tasca->data_finalitzacio->format('Y-m-d')];
+        foreach (\App\Models\Tasques::with('tipus')->whereIn('projecte_id', $idsProjectes)->whereNotNull('data_finalitzacio')->get() as $tasca) {
+            $tasques[] = ['titol' => $tasca->nom, 'color' => $tasca->tipus?->color ?? '#6b7280', 'data' => $tasca->data_finalitzacio->format('Y-m-d')];
         }
 
         $mesos = ['', 'Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny', 'Juliol', 'Agost', 'Setembre', 'Octubre', 'Novembre', 'Desembre'];
@@ -62,7 +62,7 @@
 
                             @foreach ($tasques as $tasca)
                                 @if ($tasca['data'] == $dataDia)
-                                    <span class="esdeveniment tipus-{{ $tasca['tipus'] }}" title="{{ $tasca['titol'] }}">{{ $tasca['titol'] }}</span>
+                                    <span class="esdeveniment" style="background-color: {{ $tasca['color'] }};" title="{{ $tasca['titol'] }}">{{ $tasca['titol'] }}</span>
                                 @endif
                             @endforeach
                         </div>

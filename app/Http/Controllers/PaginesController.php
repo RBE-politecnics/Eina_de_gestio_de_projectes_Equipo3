@@ -7,6 +7,7 @@ use App\Models\Projecte_Usuari;
 use App\Models\Projects;
 use App\Models\Rols;
 use App\Models\Tasques;
+use App\Models\TipusTasca;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,8 +41,8 @@ class PaginesController
         // Si no ens diuen quin projecte, agafem el primer de l'usuari
         $projecte = $projectes->firstWhere('id', $projecteId) ?? $projectes->first();
 
-        $tasques = collect();
         $esAdmin = false;
+        $membres = collect();
 
         if ($projecte) {
             $esAdmin = Projecte_Usuari::where('projecte_id', $projecte->id)
@@ -49,18 +50,22 @@ class PaginesController
                 ->where('rols_id', Rols::where('nom', 'Administrador')->value('id'))
                 ->exists();
 
-            $tasques = Tasques::with(['estat', 'usuari'])
-                ->where('projecte_id', $projecte->id)
-                ->latest()
+            // Els membres serveixen per triar el responsable d'una tasca
+            $membres = DB::table('projecte__usuaris')
+                ->join('users', 'users.id', '=', 'projecte__usuaris.users_id')
+                ->where('projecte__usuaris.projecte_id', $projecte->id)
+                ->select('users.id', 'users.email')
                 ->get();
         }
 
+        // Les tasques no es carreguen aquí: les demana el JavaScript a l'API
         return view('projects.tauler', [
             'projectes' => $projectes,
             'projecte' => $projecte,
-            'tasquesProjecte' => $tasques,
             'esAdmin' => $esAdmin,
+            'membres' => $membres,
             'estatsDisponibles' => Estats::orderBy('id')->get(),
+            'tipusDisponibles' => TipusTasca::orderBy('id')->get(),
         ]);
     }
 

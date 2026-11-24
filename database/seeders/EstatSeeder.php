@@ -10,9 +10,9 @@ class EstatSeeder extends Seeder
     public function run(): void
     {
         DB::table('estats')->insert([
-            ['nom' => 'Pendent'],
-            ['nom' => 'En curs'],
-            ['nom' => 'Completada'],
+            ['nom' => 'Per fer', 'bloqueja' => false],
+            ['nom' => 'En progrés', 'bloqueja' => false],
+            ['nom' => 'Feta', 'bloqueja' => true],
         ]);
     }
 }

@@ -11,7 +11,7 @@ class TasquesSeeder extends Seeder
     {
         $projecteId = DB::table('projects')->orderBy('id')->value('id');
         $usuariId = DB::table('users')->orderBy('id')->value('id');
-        $estatId = DB::table('estats')->where('nom', 'En curs')->value('id');
+        $estatId = DB::table('estats')->where('nom', 'En progrés')->value('id');
 
         DB::table('tasques')->insert([
             'projecte_id' => $projecteId,

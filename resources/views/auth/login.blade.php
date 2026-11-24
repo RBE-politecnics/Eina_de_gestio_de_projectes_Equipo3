@@ -32,7 +32,8 @@
             <h2 class="fw-bold">Torna al teu espai</h2>
             <p class="text-secondary mb-4">Introdueix les teves dades per continuar.</p>
 
-            <form method="POST" action="{{ route('login.store') }}">
+            <form method="POST" action="{{ route('login.store') }}" id="formAuth"
+                  data-api="{{ url('/api/login') }}" data-desti="{{ route('dashboard') }}">
                 @csrf
 
                 <div class="mb-3">
@@ -69,6 +70,8 @@
                     <label for="remember" class="form-check-label text-secondary small">Recorda'm</label>
                 </div>
 
+                <p id="errorAuth" class="text-danger small d-none"></p>
+
                 <button type="submit" class="btn btn-primary btn-lg w-100">Entrar a Kantum</button>
             </form>
 
@@ -79,4 +82,5 @@
         </div>
     </div>
 </main>
+<script src="{{ asset('js/auth.js') }}"></script>
 @endsection
