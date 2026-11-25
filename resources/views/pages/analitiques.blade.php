@@ -6,31 +6,34 @@
     @php
         // Tasques dels projectes de l'usuari
         $idsProjectes = \App\Models\Projecte_Usuari::where('users_id', auth()->id())->pluck('projecte_id');
-        $tasquesBD = \App\Models\Tasques::with(['estat', 'usuari'])->whereIn('projecte_id', $idsProjectes)->get();
-
-        $estats = ['per-fer' => 'Per fer', 'en-progres' => 'En progrés', 'feta' => 'Feta'];
+        $tasquesBD = \App\Models\Tasques::with(['estat', 'usuari', 'tipus'])->whereIn('projecte_id', $idsProjectes)->get();
+        $estatsBD = \App\Models\Estats::orderBy('id')->get();
+        $primerEstat = $estatsBD->first()?->id;
 
         // Comptadors: comencen a 0 i sumem 1 per cada tasca
         $total = $tasquesBD->count();
         $fetes = 0;
         $enProgres = 0;
-        $perEstat = ['per-fer' => 0, 'en-progres' => 0, 'feta' => 0];
+        $perEstat = [];
+        $perTipus = [];
         $perPersona = [];
 
-        foreach ($tasquesBD as $tasca) {
-            $nomEstat = strtolower($tasca->estat?->nom ?? '');
+        foreach ($estatsBD as $estatBD) {
+            $perEstat[$estatBD->nom] = 0;
+        }
 
-            if ($nomEstat == 'completada') {
-                $clauEstat = 'feta';
+        foreach ($tasquesBD as $tasca) {
+            if ($tasca->estat?->bloqueja) {
                 $fetes++;
-            } elseif ($nomEstat == 'en curs') {
-                $clauEstat = 'en-progres';
+            } elseif ($tasca->estats_id != $primerEstat) {
                 $enProgres++;
-            } else {
-                $clauEstat = 'per-fer';
             }
 
-            $perEstat[$clauEstat]++;
+            $nomEstat = $tasca->estat?->nom;
+            $perEstat[$nomEstat] = ($perEstat[$nomEstat] ?? 0) + 1;
+
+            $nomTipus = $tasca->tipus?->nom ?? 'Sense tipus';
+            $perTipus[$nomTipus] = ($perTipus[$nomTipus] ?? 0) + 1;
 
             $persona = $tasca->usuari?->email ?? 'Sense assignar';
             $perPersona[$persona] = ($perPersona[$persona] ?? 0) + 1;
@@ -81,9 +84,25 @@
                         <div class="targeta-dada">
                             <h2 class="h5 text-white mb-4">Tasques per estat</h2>
 
-                            @foreach ($perEstat as $clau => $quantitat)
+                            @foreach ($perEstat as $nomEstat => $quantitat)
                                 <div class="d-flex justify-content-between small text-white">
-                                    <span>{{ $estats[$clau] }}</span>
+                                    <span>{{ $nomEstat }}</span>
+                                    <span>{{ $quantitat }}</span>
+                                </div>
+                                <div class="progress mb-3">
+                                    <div class="progress-bar" style="width: {{ $quantitat * 100 / $divisor }}%"></div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-xl-6">
+                        <div class="targeta-dada">
+                            <h2 class="h5 text-white mb-4">Tasques per tipus</h2>
+
+                            @foreach ($perTipus as $nomTipus => $quantitat)
+                                <div class="d-flex justify-content-between small text-white">
+                                    <span>{{ $nomTipus }}</span>
                                     <span>{{ $quantitat }}</span>
                                 </div>
                                 <div class="progress mb-3">

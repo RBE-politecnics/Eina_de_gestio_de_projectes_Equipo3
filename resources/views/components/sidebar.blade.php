@@ -22,6 +22,9 @@
         <a href="{{ route('equip') }}" @class(['kt-enllac', 'actiu' => request()->routeIs('equip')])>
             Equip
         </a>
+        <a href="{{ route('configuracio.index') }}" @class(['kt-enllac', 'actiu' => request()->routeIs('configuracio.*')])>
+            Configuració
+        </a>
     </nav>
 
     <footer class="kt-usuari">

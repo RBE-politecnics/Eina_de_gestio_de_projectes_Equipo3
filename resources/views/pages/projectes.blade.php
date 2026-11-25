@@ -21,6 +21,10 @@
                     </form>
                 </div>
 
+                @if (session('status'))
+                    <div class="alert alert-success">{{ session('status') }}</div>
+                @endif
+
                 <div class="row g-4">
                     @forelse ($projectes as $projecte)
                         @php

@@ -16,6 +16,7 @@ class Tasques extends Model
         'comentaris',
         'progres',
         'color',
+        'tipus_id',
     ];
 
     protected function casts(): array
@@ -39,5 +40,10 @@ class Tasques extends Model
     public function estat(): BelongsTo
     {
         return $this->belongsTo(Estats::class, 'estats_id');
+    }
+
+    public function tipus(): BelongsTo
+    {
+        return $this->belongsTo(TipusTasca::class, 'tipus_id');
     }
 }

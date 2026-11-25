@@ -32,7 +32,8 @@
             <h2 class="fw-bold">Crea el teu compte</h2>
             <p class="text-secondary mb-4">Omple les dades per començar.</p>
 
-            <form method="POST" action="{{ route('sign.up.store') }}">
+            <form method="POST" action="{{ route('sign.up.store') }}" id="formAuth"
+                  data-api="{{ url('/api/register') }}" data-desti="{{ route('dashboard') }}">
                 @csrf
 
                 <div class="mb-3">
@@ -76,6 +77,8 @@
                     @enderror
                 </div>
 
+                <p id="errorAuth" class="text-danger small d-none"></p>
+
                 <button type="submit" class="btn btn-primary btn-lg w-100">Crear compte</button>
             </form>
 
@@ -86,4 +89,5 @@
         </div>
     </div>
 </main>
+<script src="{{ asset('js/auth.js') }}"></script>
 @endsection
